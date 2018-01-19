@@ -37,7 +37,7 @@ export class MapComponent implements OnInit {
       zoom: this.zoom,
       center: this.coords
     });
-    let marker = new google.maps.Marker({
+    const marker = new google.maps.Marker({
       position: this.coords,
       map: this.map
     });
@@ -53,34 +53,39 @@ export class MapComponent implements OnInit {
 
   onClickMap(e) {
     console.log(e);
-    this.mapService.place.next(e);
-    const googleService = new google.maps.places.PlacesService(this.map);
-    const placeId = {
-      placeId: e.placeId
-    };
-    googleService.getDetails(placeId, (place, status) => {
-      if (status == google.maps.places.PlacesServiceStatus.OK) {
-        console.log(place);
-        this.mapService.placeInfo.next(place);
-      }
-    });
+    // this.mapService.place.next(e);
+    if (e.placeId) {
+      const googleService = new google.maps.places.PlacesService(this.map);
+      const placeId = {
+        placeId: e.placeId || ''
+      };
+      googleService.getDetails(placeId, (place, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          console.log(place);
+          this.mapService.placeInfo.next(place);
+        }
+      });
+    } else {
+      this.mapService.placeInfo.next(e);
+    }
+
   }
 
   private setCurrentPosition() {
     return new Promise((resolve, reject) => {
-      if ("geolocation" in navigator) {
+      if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition((position) => {
           this.coords = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
           this.zoom = 12;
-          resolve(); 
+          resolve();
         });
       } else {
         this.coords = {lat: 49.24, lng: 28.53};
         this.zoom = 8;
-        reject(new Error("Геолокация октлючена"));
+        reject(new Error('Геолокация октлючена'));
       }
     });
   }
