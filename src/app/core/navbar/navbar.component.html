@@ -1,0 +1,20 @@
+    <div style="text-align:center">
+        <h1>
+          Welcome to {{title}}!    
+          <img width="70" src="http://download.seaicons.com/icons/social-media-icons/glossy-social/512/Github-icon.png">
+        </h1>
+      </div>
+      <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+          </li>
+          <li class="nav-item">
+            <a [ngClass]="{'nav-link': true, 'disabled': !(user | async)}" routerLink="/search" routerLinkActive="active">Search</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <button (click)="login()" *ngIf="!(user | async)" class="btn btn-outline-success my-2 my-sm-0" type="submit">Login in</button>
+          <button (click)="logout()" *ngIf="user | async" class="btn btn-outline-success my-2 my-sm-0" type="submit" >Logout</button>
+        </form>
+      </nav>
