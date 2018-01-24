@@ -8,14 +8,14 @@ import 'rxjs/add/operator/finally';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 export interface ICoords {
-    lat: number,
-    lng: number,
+    lat: number;
+    lng: number;
 }
 
 @Injectable()
 
 export class MapService {
-   
+
     public place: BehaviorSubject<any>;
     public placeInfo: BehaviorSubject<any>;
 
@@ -32,7 +32,7 @@ export class MapService {
             lat: place.latLng.lat(),
             lng: place.latLng.lng()
         };
-        if(place.placeId) {
+        if (place.placeId) {
             this.afs.collection('users').doc(userUid)
                 .collection('categories').doc('categories')
                 .collection('markers').doc(place.placeId).set(latLng);
@@ -49,7 +49,7 @@ export class MapService {
     //       if ("geolocation" in navigator) {
     //         navigator.geolocation.getCurrentPosition((position) => {
     //           const coords: ICoords = {lat: position.coords.latitude, lng: position.coords.longitude};
-    //           resolve(coords); 
+    //           resolve(coords);
     //         });
     //       } else {
     //         reject(new Error("Геолокация октлючена"));

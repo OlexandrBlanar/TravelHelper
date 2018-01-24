@@ -1,2 +1,19 @@
-<input type="submit" value="Add a marker" (click)="onAddMarker()">
-<div *ngIf="placeInfo">{{placeInfo}}</div>
+<div class="place-info">
+	<div class="info-header">
+		<h2>
+
+		</h2>
+		<div class="foto-place">
+
+		</div>
+		<div class="other-info">
+			<div class="raiting"></div>
+			<div class="site"></div>
+		</div>
+		<div class="adress"></div>
+		<div class="ours-work"></div>
+		
+	</div>
+	<input type="submit" value="Add a marker" (click)="onAddMarker()">
+	<div *ngIf="placeInfo">{{placeInfo}}</div>
+</div>

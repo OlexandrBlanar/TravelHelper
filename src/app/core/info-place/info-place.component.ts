@@ -21,7 +21,7 @@ export class InfoPlaceComponent implements OnInit {
 
   ngOnInit() {
     firebase.auth().onAuthStateChanged(user => {
-      this.userUid = user.uid
+      this.userUid = user.uid;
     });
 
     this.mapService.place
