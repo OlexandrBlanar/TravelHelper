@@ -1,3 +1,4 @@
+import { OnInit } from '@angular/core';
 import { ICoords } from './map.service';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
@@ -14,7 +15,7 @@ export interface ICoords {
 
 @Injectable()
 
-export class MapService {
+export class MapService implements OnInit {
 
     public place: BehaviorSubject<any>;
     public placeInfo: BehaviorSubject<any>;
@@ -28,6 +29,7 @@ export class MapService {
     }
 
     public addMarker(userUid: any, place: any): void {
+        console.log(place);
         const latLng = {
             lat: place.latLng.lat(),
             lng: place.latLng.lng()
@@ -35,11 +37,11 @@ export class MapService {
         if (place.placeId) {
             this.afs.collection('users').doc(userUid)
                 .collection('categories').doc('categories')
-                .collection('markers').doc(place.placeId).set(latLng);
+                .collection('markers').doc(place.name).set(latLng);
         } else {
             this.afs.collection('users').doc(userUid)
                 .collection('categories').doc('categories')
-                .collection('markers').add(latLng);
+                .collection('markers').doc(place.name).set(latLng);
         }
 
     }

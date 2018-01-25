@@ -13,7 +13,7 @@ export class InfoPlaceComponent implements OnInit {
 
   public place: any;
   public placeInfo: any;
-  private userUid: any;
+  private userUid: string;
 
   constructor(private mapService: MapService, private authService: AuthService) {
     this.placeInfo = '';
@@ -24,15 +24,21 @@ export class InfoPlaceComponent implements OnInit {
       this.userUid = user.uid;
     });
 
-    this.mapService.place
-      .subscribe(place => this.place = place);
+    // this.mapService.place
+    //   .subscribe(place => this.place = place);
 
     this.mapService.placeInfo
       .subscribe(placeInfo => this.placeInfo = placeInfo);
   }
 
   onAddMarker() {
-    this.mapService.addMarker(this.userUid, this.place);
+    if (this.placeInfo.name) {
+      this.placeInfo.latLng = this.placeInfo.geometry.location;
+      this.mapService.addMarker(this.userUid, this.placeInfo);
+    } else {
+      this.placeInfo.name = '_' + Math.random().toString(36).substr(2, 9);
+      this.mapService.addMarker(this.userUid, this.placeInfo);
+    }
   }
 
 }
