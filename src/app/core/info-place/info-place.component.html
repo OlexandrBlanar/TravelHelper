@@ -1,19 +1,19 @@
 <div *ngIf="placeInfo" class="place-info">
 	<div class="info-header">
-		<h2>
+		<h2 *ngIf="placeInfo.namew">
 			{{placeInfo.name}}
 		</h2>
 		<!-- <div class="foto-place">
 			{{placeInfo.photos[0]}}
 		</div> -->
 		<div class="other-info">
-			<div class="raiting">Рейтинг: {{placeInfo.rating}}</div>
-			<div class="site">Сайт: {{placeInfo.website}}</div>
+			<div *ngIf="placeInfo.rating" class="raiting">Рейтинг: {{placeInfo.rating}}</div>
+			<div *ngIf="placeInfo.website" class="site">Сайт: <a href=placeInfo.website>{{placeInfo.website}}</a></div>
 		</div>
 		<div class="wiki-info"></div>
-		<div class="address">Адреса: {{placeInfo.formatted_address}}</div>
-		<div class="phone-number">Телефон: {{placeInfo.formatted_phone_number}}</div>
-		<div class="opening_hours">
+		<div *ngIf="placeInfo.formatted_address" class="address">Адреса: {{placeInfo.formatted_address}}</div>
+		<div *ngIf="placeInfo.formatted_phone_number" class="phone-number">Телефон: {{placeInfo.formatted_phone_number}}</div>
+		<div *ngIf="placeInfo.opening_hours" class="opening_hours">
 			<div class="open-now">
 				<span *ngIf="placeInfo.opening_hours.open_now">Open</span>
 				<span *ngIf="!(placeInfo.opening_hours.open_now)">Closed</span>
