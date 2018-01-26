@@ -54,17 +54,7 @@ export class MapComponent implements OnInit {
   onClickMap(e) {
     console.log(e);
     this.mapService.place.next(e);
-    const googleService = new google.maps.places.PlacesService(this.map);
-    const placeId = {
-      placeId: e.placeId
-    };
-    googleService.getDetails(placeId, (place, status) => {
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        console.log(place);
-        this.mapService.placeInfo.next(place);
-      }
-    });
-    // this.mapService.place.next(e);
+
     if (e.placeId) {
       const googleService = new google.maps.places.PlacesService(this.map);
       const placeId = {

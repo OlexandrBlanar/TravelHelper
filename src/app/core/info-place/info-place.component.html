@@ -1,19 +1,28 @@
-<div class="place-info">
+<div *ngIf="placeInfo" class="place-info">
 	<div class="info-header">
 		<h2>
-
+			{{placeInfo.name}}
 		</h2>
-		<div class="foto-place">
-
-		</div>
+		<!-- <div class="foto-place">
+			{{placeInfo.photos[0]}}
+		</div> -->
 		<div class="other-info">
-			<div class="raiting"></div>
-			<div class="site"></div>
+			<div class="raiting">Рейтинг: {{placeInfo.rating}}</div>
+			<div class="site">Сайт: {{placeInfo.website}}</div>
 		</div>
-		<div class="adress"></div>
-		<div class="ours-work"></div>
+		<div class="wiki-info"></div>
+		<div class="address">Адреса: {{placeInfo.formatted_address}}</div>
+		<div class="phone-number">Телефон: {{placeInfo.formatted_phone_number}}</div>
+		<div class="opening_hours">
+			<div class="open-now">
+				<span *ngIf="placeInfo.opening_hours.open_now">Open</span>
+				<span *ngIf="!(placeInfo.opening_hours.open_now)">Closed</span>
+			</div>
+			<ul>
+				<li *ngFor="let day of placeInfo.opening_hours.weekday_text">{{day}}</li>
+			</ul>
+		</div>
 		
 	</div>
 	<input type="submit" value="Add a marker" (click)="onAddMarker()">
-	<div *ngIf="placeInfo">{{placeInfo}}</div>
 </div>
