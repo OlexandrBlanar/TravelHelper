@@ -1,3 +1,15 @@
-<p>
-  category works!
-</p>
+<div class="container">
+  <div class="header-component-categories">
+      <h1>Вибір категорії</h1>
+      <select name="categories" id="cat">
+        <ng-container *ngIf="categories">
+          <option *ngFor="let category in categories" value="category.name">{{ category.name }}</option>
+        </ng-container>
+      </select>
+  </div>
+  <div class="markers">
+    <ul>
+      <li *ngFor="let marker in category">{{marker.name}}</li>
+    </ul>
+  </div>
+</div>

@@ -9,6 +9,7 @@ import { InfoPlaceComponent } from './info-place/info-place.component';
 import { EditPlaceComponent } from './edit-place/edit-place.component';
 import { CategoryComponent } from './category/category.component';
 import { MainComponent } from './main/main.component';
+import { EditCategoryComponent } from './edit-category/edit-category.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,6 @@ import { MainComponent } from './main/main.component';
     InfoPlaceComponent, 
     EditPlaceComponent, 
     CategoryComponent, 
-    MainComponent]
+    MainComponent, EditCategoryComponent]
 })
 export class CoreModule { }

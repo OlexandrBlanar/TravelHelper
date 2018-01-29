@@ -109,7 +109,7 @@ export class LoginComponent implements OnInit {
 
       this.authService.login(email.value, password.value)
         .then(value => {
-            this.router.navigate(['/registration']);
+            this.router.navigate(['/map']);
             console.log(firebase.auth().currentUser.uid);
             console.log('Nice, it worked!');
         })

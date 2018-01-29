@@ -1,7 +1,7 @@
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from './auth/auth.service';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
@@ -12,9 +12,11 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { environment } from './../environments/environment';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { MapService } from './core/map/map.service';
+import { InfoPlaceService } from './core/info-place/info-place.service';
 
 @NgModule({
   declarations: [
@@ -29,11 +31,13 @@ import { MapService } from './core/map/map.service';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    HttpClientModule,
+    HttpClientJsonpModule,
     AuthModule,
     CoreModule,
     SharedModule
   ],
-  providers: [AuthService, MapService],
+  providers: [AuthService, MapService, InfoPlaceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

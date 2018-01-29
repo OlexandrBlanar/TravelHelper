@@ -15,7 +15,7 @@ export interface ICoords {
 
 @Injectable()
 
-export class MapService implements OnInit {
+export class MapService {
 
     public place: BehaviorSubject<any>;
     public placeInfo: BehaviorSubject<any>;
@@ -23,9 +23,6 @@ export class MapService implements OnInit {
     constructor(private afs: AngularFirestore) {
         this.place = new BehaviorSubject('');
         this.placeInfo = new BehaviorSubject('');
-    }
-
-    ngOnInit() {
     }
 
     public addMarker(userUid: any, place: any): void {

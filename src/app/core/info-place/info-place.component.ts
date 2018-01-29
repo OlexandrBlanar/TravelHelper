@@ -3,6 +3,9 @@ import { MapService } from '../map/map.service';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../../auth/auth.service';
 
+import { wikiUrl } from '../../shared/constants';
+import { InfoPlaceService } from './info-place.service';
+
 
 @Component({
   selector: 'th-info-place',
@@ -15,7 +18,11 @@ export class InfoPlaceComponent implements OnInit {
   public placeInfo: any;
   private userUid: string;
 
-  constructor(private mapService: MapService, private authService: AuthService) {
+  constructor(
+    private mapService: MapService,
+    private authService: AuthService,
+    private infoPlaceService: InfoPlaceService
+  ) {
     this.placeInfo = '';
   }
 
@@ -28,7 +35,12 @@ export class InfoPlaceComponent implements OnInit {
     //   .subscribe(place => this.place = place);
 
     this.mapService.placeInfo
-      .subscribe(placeInfo => this.placeInfo = placeInfo);
+      .subscribe(placeInfo => {
+        this.placeInfo = placeInfo;
+        if (placeInfo.name) {
+          this.infoPlaceService.getWikiInfo(placeInfo.name);
+        }
+      });
   }
 
   onAddMarker() {
