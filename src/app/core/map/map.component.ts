@@ -30,6 +30,9 @@ export class MapComponent implements OnInit {
           this.initMap();
         }
       );
+
+    this.mapService.getCategories()
+      .subscribe(doc => console.log(doc));
   }
 
   initMap() {

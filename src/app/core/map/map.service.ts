@@ -19,13 +19,16 @@ export class MapService {
 
     public place: BehaviorSubject<any>;
     public placeInfo: BehaviorSubject<any>;
+    public userUid: string;
 
     constructor(private afs: AngularFirestore) {
         this.place = new BehaviorSubject('');
         this.placeInfo = new BehaviorSubject('');
+        this.userUid = '';
     }
 
     public addMarker(userUid: any, place: any): void {
+        this.userUid = userUid;
         console.log(place);
         const latLng = {
             lat: place.latLng.lat(),
@@ -41,6 +44,11 @@ export class MapService {
                 .collection('markers').doc(place.name).set(latLng);
         }
 
+    }
+
+    getCategories() {
+        return this.afs.collection('users').doc(this.userUid)
+            .valueChanges();
     }
 
     // public setCurrentPosition() {
