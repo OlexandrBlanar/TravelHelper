@@ -10,20 +10,26 @@ import { EditPlaceComponent } from './edit-place/edit-place.component';
 import { CategoryComponent } from './category/category.component';
 import { MainComponent } from './main/main.component';
 import { EditCategoryComponent } from './edit-category/edit-category.component';
+import { CategoryService } from './category/category.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     CoreRoutingModule,
+    FormsModule
   ],
   declarations: [
-    FooterComponent, 
+    FooterComponent,
     HeaderComponent,
-    NavbarComponent, 
-    MapComponent, 
-    InfoPlaceComponent, 
-    EditPlaceComponent, 
-    CategoryComponent, 
-    MainComponent, EditCategoryComponent]
+    NavbarComponent,
+    MapComponent,
+    InfoPlaceComponent,
+    EditPlaceComponent,
+    CategoryComponent,
+    MainComponent,
+    EditCategoryComponent
+  ],
+  providers: [CategoryService],
 })
 export class CoreModule { }

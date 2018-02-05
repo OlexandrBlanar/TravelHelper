@@ -45,11 +45,12 @@ export class InfoPlaceComponent implements OnInit {
 
   onAddMarker() {
     if (this.placeInfo.name) {
+      const cat = 'cdsv';
       this.placeInfo.latLng = this.placeInfo.geometry.location;
-      this.mapService.addMarker(this.userUid, this.placeInfo);
+      this.mapService.addMarker(this.userUid, this.placeInfo, cat);
     } else {
       this.placeInfo.name = '_' + Math.random().toString(36).substr(2, 9);
-      this.mapService.addMarker(this.userUid, this.placeInfo);
+      this.mapService.addMarker(this.userUid, this.placeInfo, 'cat');
     }
   }
 

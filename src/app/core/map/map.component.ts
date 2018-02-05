@@ -1,5 +1,7 @@
 import { Coords } from './../../shared/models/coords';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import * as firebase from 'firebase/app';
+import { AuthService } from '../../auth/auth.service';
 import { MapService } from './map.service';
 
 declare let google;
@@ -18,21 +20,26 @@ export class MapComponent implements OnInit {
   automplete: any;
   coords: Coords;
   zoom: number;
+  public userUid: string;
 
   constructor(private mapService: MapService) { }
 
   ngOnInit() {
-    this.setCurrentPosition()
-      .then(
-        () => this.initMap(),
-        error => {
-          console.log(error);
-          this.initMap();
-        }
-      );
 
-    this.mapService.getCategories()
-      .subscribe(doc => console.log(doc));
+    firebase.auth().onAuthStateChanged(user => {
+      this.userUid = user.uid;
+      this.mapService.getCategories(this.userUid)
+        .subscribe(data => console.log(data));
+    });
+
+    this.setCurrentPosition()
+    .then(
+      () => this.initMap(),
+      error => {
+        console.log(error);
+        this.initMap();
+      }
+    );
   }
 
   initMap() {

@@ -15,7 +15,7 @@ export interface ICoords {
 
 @Injectable()
 
-export class MapService {
+export class MapService implements OnInit {
 
     public place: BehaviorSubject<any>;
     public placeInfo: BehaviorSubject<any>;
@@ -24,31 +24,33 @@ export class MapService {
     constructor(private afs: AngularFirestore) {
         this.place = new BehaviorSubject('');
         this.placeInfo = new BehaviorSubject('');
-        this.userUid = '';
     }
 
-    public addMarker(userUid: any, place: any): void {
+    ngOnInit() {
+    }
+
+    public addMarker(userUid: string, place: any, category: string): void {
         this.userUid = userUid;
         console.log(place);
-        const latLng = {
+        const newMarker = {
+            category: category,
             lat: place.latLng.lat(),
             lng: place.latLng.lng()
         };
         if (place.placeId) {
             this.afs.collection('users').doc(userUid)
-                .collection('categories').doc('categories')
-                .collection('markers').doc(place.name).set(latLng);
+                .collection('markers').doc(place.name).set(newMarker);
         } else {
             this.afs.collection('users').doc(userUid)
-                .collection('categories').doc('categories')
-                .collection('markers').doc(place.name).set(latLng);
+                .collection('markers').doc(place.name).set(newMarker);
         }
 
     }
 
-    getCategories() {
-        return this.afs.collection('users').doc(this.userUid)
-            .valueChanges();
+    getCategories(userUid: string) {
+        console.log(userUid);
+        return this.afs.collection('users').doc('QapfApMP1qO3Eql80nFVmhvR4Aj1')
+            .snapshotChanges();
     }
 
     // public setCurrentPosition() {

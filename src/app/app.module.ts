@@ -17,6 +17,7 @@ import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { MapService } from './core/map/map.service';
 import { InfoPlaceService } from './core/info-place/info-place.service';
+import { DbService } from './shared/services/db.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import { InfoPlaceService } from './core/info-place/info-place.service';
     CoreModule,
     SharedModule
   ],
-  providers: [AuthService, MapService, InfoPlaceService],
+  providers: [AuthService, MapService, InfoPlaceService, DbService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
