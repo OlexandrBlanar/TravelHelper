@@ -17,10 +17,10 @@ export class MainComponent implements OnInit {
     this.dbService.getUser().onAuthStateChanged(user => {
       this.dbService.userUid.next(user.uid);
       this.dbService.getCategories(user.uid)
-        // .map(data => data.categories)
+        // .map(data => data)
         .subscribe(data => {
           console.log(data);
-          // this.dbService.categories.next(data.categories);
+          this.dbService.categories.next(data.categories);
         });
     });
 

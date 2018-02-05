@@ -1,10 +1,16 @@
 import { Injectable, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../../auth/auth.service';
 
+interface ICategoriesObj {
+  categories: string[];
+}
+
 @Injectable()
+
 export class DbService implements OnInit {
 
   public categories: BehaviorSubject<string[]>;
@@ -23,9 +29,10 @@ export class DbService implements OnInit {
     return firebase.auth();
   }
 
-  getCategories(userUid) {
-    return this.afs.collection('users').doc(userUid)
+  getCategories(userUid): Observable<any> {
+    return (this.afs as any).collection('users').doc(userUid)
     .valueChanges();
+    // .map(data => data.categories);
   }
 
   addCategory(userUid: string, newCategory: string, categories): void {

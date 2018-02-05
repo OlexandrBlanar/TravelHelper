@@ -23,10 +23,12 @@ export class CategoryComponent implements OnInit {
     firebase.auth().onAuthStateChanged(user => {
       this.userUid = user.uid;
       console.log(user.uid);
+      this.dbService.getCategories(user.uid)
+      .subscribe(data => this.categories = data.categories);
     });
 
-    this.dbService.userUid
-      .subscribe(data => this.categories);
+    // this.dbService.getCategories()
+    //   .subscribe(data => this.categories);
 
     // this.afs.collection('users').doc('QapfApMP1qO3Eql80nFVmhvR4Aj1')
     //         .snapshotChanges();
