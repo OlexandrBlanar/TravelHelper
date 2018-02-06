@@ -14,10 +14,12 @@ interface ICategoriesObj {
 export class DbService implements OnInit {
 
   public categories: BehaviorSubject<string[]>;
+  public markers: BehaviorSubject<any>;
   public userUid: BehaviorSubject<string>;
 
   constructor(private afs: AngularFirestore) {
     this.categories = new BehaviorSubject([]);
+    this.markers = new BehaviorSubject([]);
     this.userUid = new BehaviorSubject('');
   }
 
@@ -29,10 +31,14 @@ export class DbService implements OnInit {
     return firebase.auth();
   }
 
-  getCategories(userUid): Observable<any> {
+  getCategories(userUid: string): Observable<any> {
     return (this.afs as any).collection('users').doc(userUid)
-    .valueChanges();
-    // .map(data => data.categories);
+      .valueChanges();
+  }
+
+  getMarkers(userUid: string): Observable<any> {
+    return (this.afs as any).collection('users').doc(userUid).collection('markers')
+      .snapshotChanges();
   }
 
   addCategory(userUid: string, newCategory: string, categories): void {

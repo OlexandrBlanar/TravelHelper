@@ -24,7 +24,10 @@ export class CategoryComponent implements OnInit {
       this.userUid = user.uid;
       console.log(user.uid);
       this.dbService.getCategories(user.uid)
-      .subscribe(data => this.categories = data.categories);
+      .subscribe(data => {
+        this.categories = data.categories;
+        console.log(this.categories);
+      });
     });
 
     // this.dbService.getCategories()

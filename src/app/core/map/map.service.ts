@@ -33,7 +33,9 @@ export class MapService implements OnInit {
         this.userUid = userUid;
         console.log(place);
         const newMarker = {
+            name: place.name,
             category: category,
+            coments: '',
             lat: place.latLng.lat(),
             lng: place.latLng.lng()
         };
