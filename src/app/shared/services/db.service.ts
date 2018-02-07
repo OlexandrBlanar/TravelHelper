@@ -11,20 +11,16 @@ interface ICategoriesObj {
 
 @Injectable()
 
-export class DbService implements OnInit {
+export class DbService {
 
-  public categories: BehaviorSubject<string[]>;
-  public markers: BehaviorSubject<any>;
-  public userUid: BehaviorSubject<string>;
+  categories: BehaviorSubject<string[]>;
+  markers: BehaviorSubject<any>;
+  userUid: BehaviorSubject<string>;
 
   constructor(private afs: AngularFirestore) {
     this.categories = new BehaviorSubject([]);
     this.markers = new BehaviorSubject([]);
     this.userUid = new BehaviorSubject('');
-  }
-
-  ngOnInit() {
-
   }
 
   getUser() {
@@ -38,7 +34,7 @@ export class DbService implements OnInit {
 
   getMarkers(userUid: string): Observable<any> {
     return (this.afs as any).collection('users').doc(userUid).collection('markers')
-      .snapshotChanges();
+      .valueChanges();
   }
 
   addCategory(userUid: string, newCategory: string, categories): void {

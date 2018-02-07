@@ -10,14 +10,4 @@ export class CategoryService {
   constructor(private afs: AngularFirestore) {
     this.categories = new BehaviorSubject([]);
   }
-
-  addCategory(userUid: string, newCategory: string): void {
-    console.log(newCategory);
-    const categories = {
-      categories: newCategory
-    };
-    this.afs.collection('users').doc(userUid)
-      .set(categories);
-  }
-
 }

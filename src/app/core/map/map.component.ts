@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../../auth/auth.service';
 import { MapService } from './map.service';
+import { DbService } from '../../shared/services/db.service';
 
 declare let google;
 
@@ -16,22 +17,17 @@ export class MapComponent implements OnInit {
   @ViewChild('map') mapElement: ElementRef;
   @ViewChild('searchTextField') searchTextFieldElement: ElementRef;
 
-  map: any;
-  automplete: any;
-  coords: Coords;
-  zoom: number;
-  public userUid: string;
+  private map: any;
+  private automplete: any;
+  private coords: Coords;
+  private zoom: number;
+  private userUid: string;
 
-  constructor(private mapService: MapService) { }
+  constructor(private mapService: MapService, private dbService: DbService) { }
 
   ngOnInit() {
-
-    firebase.auth().onAuthStateChanged(user => {
-      this.userUid = user.uid;
-      this.mapService.getCategories(this.userUid)
-        .subscribe(data => console.log(data));
-    });
-
+    this.dbService.userUid
+      .subscribe(data => this.userUid = data);
     this.setCurrentPosition()
     .then(
       () => this.initMap(),
@@ -40,6 +36,7 @@ export class MapComponent implements OnInit {
         this.initMap();
       }
     );
+    // this.dbService.getMarkers()
   }
 
   initMap() {

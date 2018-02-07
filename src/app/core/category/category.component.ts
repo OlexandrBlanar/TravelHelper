@@ -29,12 +29,6 @@ export class CategoryComponent implements OnInit {
         console.log(this.categories);
       });
     });
-
-    // this.dbService.getCategories()
-    //   .subscribe(data => this.categories);
-
-    // this.afs.collection('users').doc('QapfApMP1qO3Eql80nFVmhvR4Aj1')
-    //         .snapshotChanges();
   }
 
   onAddCategory() {
