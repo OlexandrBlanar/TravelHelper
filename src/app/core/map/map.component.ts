@@ -1,9 +1,12 @@
 import { Coords } from './../../shared/models/coords';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../../auth/auth.service';
 import { MapService } from './map.service';
 import { DbService } from '../../shared/services/db.service';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 declare let google;
 
@@ -12,31 +15,59 @@ declare let google;
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnDestroy, OnInit {
 
   @ViewChild('map') mapElement: ElementRef;
   @ViewChild('searchTextField') searchTextFieldElement: ElementRef;
 
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
   private map: any;
   private automplete: any;
   private coords: Coords;
   private zoom: number;
   private userUid: string;
+  private locations: Object[];
 
   constructor(private mapService: MapService, private dbService: DbService) { }
 
   ngOnInit() {
-    this.dbService.userUid
+    this.dbService.userUid$
+      .takeUntil(this.ngUnsubscribe)
       .subscribe(data => this.userUid = data);
-    this.setCurrentPosition()
-    .then(
-      () => this.initMap(),
-      error => {
-        console.log(error);
+    const subMarkers$ = () => this.dbService.markers$
+      .map(markers => markers.map(marker => {
+        return {
+        lat: marker.lat,
+        lng: marker.lng
+        };
+      }))
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(locations => {
+        this.locations = locations;
         this.initMap();
-      }
-    );
-    // this.dbService.getMarkers()
+      });
+    this.setCurrentPosition()
+      .then(
+        () => subMarkers$(),
+        error => {
+          console.log(error);
+          this.initMap();
+        }
+      );
+    // (this.setCurrentPosition() as any)
+    // .switchMap( () => {
+    //   return this.dbService.markers
+    //     .map(markers => markers.map(marker => {
+    //       return {
+    //         lat: marker.lat,
+    //         lng: marker.lng
+    //       };
+    //     }));
+    // })
+    // .subscribe(locations => {
+    //   this.locations = locations;
+    //   this.initMap();
+    // });
   }
 
   initMap() {
@@ -44,9 +75,12 @@ export class MapComponent implements OnInit {
       zoom: this.zoom,
       center: this.coords
     });
-    const marker = new google.maps.Marker({
-      position: this.coords,
-      map: this.map
+    console.log(this.locations);
+    const markers = this.locations.map(location => {
+      return new google.maps.Marker({
+        position: location,
+        map: this.map
+      });
     });
     this.automplete = new google.maps.places.Autocomplete(this.searchTextFieldElement.nativeElement);
     this.automplete.addListener('place_changed', () => this.setNewCoords());
@@ -98,4 +132,8 @@ export class MapComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }

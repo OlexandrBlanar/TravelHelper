@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MapService } from '../map/map.service';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../../auth/auth.service';
+import { Subscription } from 'rxjs/Subscription';
 
 import { wikiUrl } from '../../shared/constants';
 import { InfoPlaceService } from './info-place.service';
@@ -12,11 +13,10 @@ import { InfoPlaceService } from './info-place.service';
   templateUrl: './info-place.component.html',
   styleUrls: ['./info-place.component.scss']
 })
-export class InfoPlaceComponent implements OnInit {
-
-  public place: any;
-  public placeInfo: any;
+export class InfoPlaceComponent implements OnInit, OnDestroy {
   private userUid: string;
+  private subPlace: Subscription;
+  placeInfo: any;
 
   constructor(
     private mapService: MapService,
@@ -34,7 +34,7 @@ export class InfoPlaceComponent implements OnInit {
     // this.mapService.place
     //   .subscribe(place => this.place = place);
 
-    this.mapService.placeInfo
+    this.subPlace = this.mapService.placeInfo
       .subscribe(placeInfo => {
         this.placeInfo = placeInfo;
         if (placeInfo.name) {
@@ -52,6 +52,10 @@ export class InfoPlaceComponent implements OnInit {
       this.placeInfo.name = '_' + Math.random().toString(36).substr(2, 9);
       this.mapService.addMarker(this.userUid, this.placeInfo, 'cat');
     }
+  }
+
+  ngOnDestroy() {
+    this.subPlace.unsubscribe();
   }
 
 }

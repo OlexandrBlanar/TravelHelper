@@ -1,17 +1,17 @@
 <div class="container">
   <div class="header-component-categories">
       <h1>Вибір категорії</h1>
-      <select name="categories" id="cat">
+      <select name="categories" id="cat" [(ngModel)]="selectedCat || categories[0]">
         <ng-container *ngIf="categories">
           <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
         </ng-container>
       </select>
   </div>
-  <!-- <div class="markers">
+  <div class="markers">
     <ul>
-      <li *ngFor="let marker in category">{{marker.name}}</li>
+      <li *ngFor="let marker of markers">{{ marker }}</li>
     </ul>
-  </div> -->
+  </div>
 </div>
 <input type="text" [(ngModel)]="newCategory">
 <input type="button" value="Add category" (click)="onAddCategory()">
