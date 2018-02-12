@@ -7,7 +7,10 @@
       <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+            <a class="nav-link" [routerLink]="['/map']" routerLinkActive="active">Map</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/category']" routerLinkActive="active">Category</a>
           </li>
           <li class="nav-item">
             <a [ngClass]="{'nav-link': true, 'disabled': !(user | async)}" routerLink="/search" routerLinkActive="active">Search</a>

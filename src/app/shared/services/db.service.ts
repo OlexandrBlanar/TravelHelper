@@ -14,9 +14,9 @@ interface ICategoriesObj {
 
 export class DbService {
 
-  categories$: Subject<string[]> = new Subject();
-  markers$: Subject<any> = new Subject();
-  userUid$: Subject<string> = new Subject();
+  categories$: BehaviorSubject<string[]> = new BehaviorSubject([]);
+  markers$: BehaviorSubject<any> = new BehaviorSubject([]);
+  userUid$: BehaviorSubject<string> = new BehaviorSubject('');
 
   constructor(private afs: AngularFirestore) { }
 
@@ -30,6 +30,7 @@ export class DbService {
   }
 
   getMarkers(userUid: string): Observable<any> {
+    console.log(userUid);
     return (this.afs as any).collection('users').doc(userUid).collection('markers')
       .valueChanges();
   }

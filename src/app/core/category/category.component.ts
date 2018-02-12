@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CategoryService } from './category.service';
+// import { CategoryService } from './category.service';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../../auth/auth.service';
 import { DbService } from '../../shared/services/db.service';
@@ -16,12 +16,11 @@ export class CategoryComponent implements OnInit, OnDestroy {
   private userUid: string;
   categories: string[];
   newCategory: string;
-  markers: string[];
-  selectedCat: string;
+  markers: Object[];
+  selectedCat: string = null;
+  filteredMarkers: string[];
 
-  constructor(private dbService: DbService) {
-    this.categories = [];
-  }
+  constructor(private dbService: DbService) {  }
 
   ngOnInit() {
     this.dbService.userUid$
@@ -29,23 +28,28 @@ export class CategoryComponent implements OnInit, OnDestroy {
       .subscribe(userUid => this.userUid = userUid);
     this.dbService.categories$
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(categories => this.categories = categories);
-
+      .subscribe(categories => {
+        if (this.selectedCat === null && categories[0]) {
+          this.selectedCat = categories[0];
+          console.log(this.selectedCat);
+        }
+        return this.categories = categories;
+      });
     this.dbService.markers$
-      .map(markers => {
-        console.log(markers);
-        return markers.filter(marker => marker.category = this.selectedCat);
-      })
-      .map(markers => {
-        console.log(markers);
-        return markers.map(marker => marker.category);
-      })
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(markers => this.markers);
+      .subscribe(markers => {
+        this.markers = markers;
+        this.onChange(this.selectedCat);
+      });
   }
 
-  onAddCategory() {
+  onAddCategory(): void {
     this.dbService.addCategory(this.userUid, this.newCategory, this.categories);
+    this.newCategory = '';
+  }
+
+  onChange(selectedCat: string): void {
+    this.filteredMarkers = (this.markers as any).filter(marker => marker.category === selectedCat);
   }
 
   ngOnDestroy() {

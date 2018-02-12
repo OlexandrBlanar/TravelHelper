@@ -1,7 +1,7 @@
 <div class="container">
   <div class="header-component-categories">
       <h1>Вибір категорії</h1>
-      <select name="categories" id="cat" [(ngModel)]="selectedCat || categories[0]">
+      <select name="categories" id="cat" [(ngModel)]="selectedCat" (ngModelChange)="onChange($event)">
         <ng-container *ngIf="categories">
           <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
         </ng-container>
@@ -9,7 +9,7 @@
   </div>
   <div class="markers">
     <ul>
-      <li *ngFor="let marker of markers">{{ marker }}</li>
+      <li *ngFor="let marker of filteredMarkers">{{ marker.name }}</li>
     </ul>
   </div>
 </div>

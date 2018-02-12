@@ -4,8 +4,10 @@ import * as firebase from 'firebase/app';
 import { AuthService } from '../../auth/auth.service';
 import { MapService } from './map.service';
 import { DbService } from '../../shared/services/db.service';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/catch';
 import { Subject } from 'rxjs/Subject';
 
 declare let google;
@@ -34,7 +36,31 @@ export class MapComponent implements OnDestroy, OnInit {
     this.dbService.userUid$
       .takeUntil(this.ngUnsubscribe)
       .subscribe(data => this.userUid = data);
-    const subMarkers$ = () => this.dbService.markers$
+    // const subMarkers$ = () => this.dbService.markers$
+    //   .map(markers => markers.map(marker => {
+    //     return {
+    //     lat: marker.lat,
+    //     lng: marker.lng
+    //     };
+    //   }))
+    //   .takeUntil(this.ngUnsubscribe)
+    //   .subscribe(locations => {
+    //     this.locations = locations;
+    //     this.initMap();
+    //   });
+    Observable.fromPromise(this.setCurrentPosition())
+      .catch(error => {
+          console.log(error);
+          this.initMap();
+          return Observable.of(`Bad Promise: ${error}`);
+        })
+      .switchMap(() => {
+        return this.dbService.markers$;
+      })
+      // error => {
+      //   console.log(error);
+      //   this.initMap();
+      // })
       .map(markers => markers.map(marker => {
         return {
         lat: marker.lat,
@@ -46,36 +72,20 @@ export class MapComponent implements OnDestroy, OnInit {
         this.locations = locations;
         this.initMap();
       });
-    this.setCurrentPosition()
-      .then(
-        () => subMarkers$(),
-        error => {
-          console.log(error);
-          this.initMap();
-        }
-      );
-    // (this.setCurrentPosition() as any)
-    // .switchMap( () => {
-    //   return this.dbService.markers
-    //     .map(markers => markers.map(marker => {
-    //       return {
-    //         lat: marker.lat,
-    //         lng: marker.lng
-    //       };
-    //     }));
-    // })
-    // .subscribe(locations => {
-    //   this.locations = locations;
-    //   this.initMap();
-    // });
+      // .then(
+      //   () => subMarkers$(),
+      //   error => {
+      //     console.log(error);
+      //     this.initMap();
+      //   }
+      // );
   }
 
-  initMap() {
+  initMap(): void {
     this.map = new google.maps.Map(this.mapElement.nativeElement, {
       zoom: this.zoom,
       center: this.coords
     });
-    console.log(this.locations);
     const markers = this.locations.map(location => {
       return new google.maps.Marker({
         position: location,
@@ -87,12 +97,12 @@ export class MapComponent implements OnDestroy, OnInit {
     this.map.addListener('click', this.onClickMap.bind(this));
   }
 
-  setNewCoords() {
+  setNewCoords(): void {
     this.coords = this.automplete.getPlace().geometry.location;
     this.map.setCenter(this.coords);
   }
 
-  onClickMap(e) {
+  onClickMap(e): void {
     console.log(e);
     this.mapService.place.next(e);
 
