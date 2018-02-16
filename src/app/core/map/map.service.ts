@@ -31,7 +31,7 @@ export class MapService implements OnInit {
     addMarker(userUid: string, place: any, category: string): void {
         const newMarker = {
             name: place.name,
-            category: 'cdsv',
+            category: category,
             coments: '',
             lat: place.latLng.lat(),
             lng: place.latLng.lng()

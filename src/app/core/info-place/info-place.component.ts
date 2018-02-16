@@ -17,6 +17,7 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
   private userUid: string;
   private subPlace: Subscription;
   placeInfo: any;
+  category: string;
 
   constructor(
     private mapService: MapService,
@@ -45,12 +46,12 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
 
   onAddMarker() {
     if (this.placeInfo.name) {
-      const cat = 'cdsv';
+      console.log(this.category);
       this.placeInfo.latLng = this.placeInfo.geometry.location;
-      this.mapService.addMarker(this.userUid, this.placeInfo, cat);
+      this.mapService.addMarker(this.userUid, this.placeInfo, this.category);
     } else {
       this.placeInfo.name = '_' + Math.random().toString(36).substr(2, 9);
-      this.mapService.addMarker(this.userUid, this.placeInfo, 'cat');
+      this.mapService.addMarker(this.userUid, this.placeInfo, this.category);
     }
   }
 
