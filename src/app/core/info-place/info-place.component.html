@@ -24,6 +24,11 @@
 		</div>
 		
 	</div>
-	<input type="text" [(ngModel)]="category">
+	<select name="categories" id="cat" [(ngModel)]="selectedCat">
+        <ng-container *ngIf="categories">
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </ng-container>
+    </select>
+	<input type="text" [(ngModel)]="newCategory">
 	<input type="submit" value="Add a marker" (click)="onAddMarker()">
 </div>

@@ -35,6 +35,14 @@ export class DbService {
       .valueChanges();
   }
 
+  deleteMarker(userUid: string, marker: string) {
+    console.log(marker);
+    (this.afs as any).collection('users').doc(userUid).collection('markers').doc(marker)
+      .delete()
+      .then(() => console.log('Marker successfully deleted'))
+      .catch((err) => console.log(err));
+  }
+
   addCategory(userUid: string, newCategory: string, categories): void {
     console.log(newCategory);
     const newCategories = {

@@ -36,18 +36,6 @@ export class MapComponent implements OnDestroy, OnInit {
     this.dbService.userUid$
       .takeUntil(this.ngUnsubscribe)
       .subscribe(data => this.userUid = data);
-    // const subMarkers$ = () => this.dbService.markers$
-    //   .map(markers => markers.map(marker => {
-    //     return {
-    //     lat: marker.lat,
-    //     lng: marker.lng
-    //     };
-    //   }))
-    //   .takeUntil(this.ngUnsubscribe)
-    //   .subscribe(locations => {
-    //     this.locations = locations;
-    //     this.initMap();
-    //   });
     Observable.fromPromise(this.setCurrentPosition())
       .catch(error => {
           console.log(error);
@@ -57,28 +45,17 @@ export class MapComponent implements OnDestroy, OnInit {
       .switchMap(() => {
         return this.dbService.markers$;
       })
-      // error => {
-      //   console.log(error);
-      //   this.initMap();
-      // })
+      .takeUntil(this.ngUnsubscribe)
       .map(markers => markers.map(marker => {
         return {
         lat: marker.lat,
         lng: marker.lng
         };
       }))
-      .takeUntil(this.ngUnsubscribe)
       .subscribe(locations => {
         this.locations = locations;
         this.initMap();
       });
-      // .then(
-      //   () => subMarkers$(),
-      //   error => {
-      //     console.log(error);
-      //     this.initMap();
-      //   }
-      // );
   }
 
   initMap(): void {

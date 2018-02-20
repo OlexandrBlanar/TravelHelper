@@ -2,11 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MapService } from '../map/map.service';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../../auth/auth.service';
-import { Subscription } from 'rxjs/Subscription';
 
 import { wikiUrl } from '../../shared/constants';
 import { InfoPlaceService } from './info-place.service';
-
+import { DbService } from '../../shared/services/db.service';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'th-info-place',
@@ -14,13 +15,16 @@ import { InfoPlaceService } from './info-place.service';
   styleUrls: ['./info-place.component.scss']
 })
 export class InfoPlaceComponent implements OnInit, OnDestroy {
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
   private userUid: string;
-  private subPlace: Subscription;
   placeInfo: any;
-  category: string;
+  categories: string[];
+  newCategory: string;
+  selectedCat: string;
 
   constructor(
     private mapService: MapService,
+    private dbService: DbService,
     private authService: AuthService,
     private infoPlaceService: InfoPlaceService
   ) {
@@ -28,14 +32,20 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    firebase.auth().onAuthStateChanged(user => {
-      this.userUid = user.uid;
-    });
+    this.dbService.userUid$
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(userUid => this.userUid = userUid);
+    this.dbService.categories$
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(categories => {
+        if (this.selectedCat === undefined && categories[0]) {
+          this.selectedCat = categories[0];
+        }
+        this.categories = categories;
+      });
 
-    // this.mapService.place
-    //   .subscribe(place => this.place = place);
-
-    this.subPlace = this.mapService.placeInfo
+    this.mapService.placeInfo
+      .takeUntil(this.ngUnsubscribe)
       .subscribe(placeInfo => {
         this.placeInfo = placeInfo;
         if (placeInfo.name) {
@@ -46,17 +56,22 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
 
   onAddMarker() {
     if (this.placeInfo.name) {
-      console.log(this.category);
+      console.log(this.newCategory);
       this.placeInfo.latLng = this.placeInfo.geometry.location;
-      this.mapService.addMarker(this.userUid, this.placeInfo, this.category);
+      this.mapService.addMarker(this.userUid, this.placeInfo, this.newCategory || this.selectedCat);
     } else {
       this.placeInfo.name = '_' + Math.random().toString(36).substr(2, 9);
-      this.mapService.addMarker(this.userUid, this.placeInfo, this.category);
+      this.mapService.addMarker(this.userUid, this.placeInfo, this.newCategory || this.selectedCat);
+    }
+    if (this.newCategory) {
+      this.dbService.addCategory(this.userUid, this.newCategory, this.categories);
+      this.newCategory = '';
     }
   }
 
   ngOnDestroy() {
-    this.subPlace.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }

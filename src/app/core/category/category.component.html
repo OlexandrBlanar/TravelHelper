@@ -9,7 +9,10 @@
   </div>
   <div class="markers">
     <ul>
-      <li *ngFor="let marker of filteredMarkers">{{ marker["name"] }}</li>
+      <li *ngFor="let marker of filteredMarkers" #ival>
+        {{ marker["name"] }}
+        <input type="button" value="delete marker" (click)="deleteMarker(ival.innerText)">
+      </li>
     </ul>
   </div>
 </div>
