@@ -28,15 +28,4 @@ export class MapService implements OnInit {
     ngOnInit() {
     }
 
-    addMarker(userUid: string, place: any, category: string): void {
-        const newMarker = {
-            name: place.name,
-            category: category,
-            coments: '',
-            lat: place.latLng.lat(),
-            lng: place.latLng.lng()
-        };
-        this.afs.collection('users').doc(userUid)
-            .collection('markers').doc(place.name).set(newMarker);
-    }
 }

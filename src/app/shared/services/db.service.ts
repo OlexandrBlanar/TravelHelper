@@ -35,18 +35,38 @@ export class DbService {
       .valueChanges();
   }
 
-  deleteMarker(userUid: string, marker: string) {
-    console.log(marker);
+  addMarker(userUid: string, place: any, category: string): void {
+    const newMarker = {
+        name: place.name,
+        category: category,
+        coments: '',
+        lat: place.latLng.lat(),
+        lng: place.latLng.lng()
+    };
+    this.afs.collection('users').doc(userUid)
+        .collection('markers').doc(place.name).set(newMarker);
+  }
+
+  deleteMarker(userUid: string, marker: string): void {
     (this.afs as any).collection('users').doc(userUid).collection('markers').doc(marker)
       .delete()
       .then(() => console.log('Marker successfully deleted'))
       .catch((err) => console.log(err));
   }
 
-  addCategory(userUid: string, newCategory: string, categories): void {
+  addCategory(userUid: string, newCategory: string, categories: string[]): void {
     console.log(newCategory);
     const newCategories = {
       categories: [newCategory, ...categories]
+    };
+    this.afs.collection('users').doc(userUid)
+      .set(newCategories);
+  }
+
+  deleteCategory(userUid: string, deleteCategory: string, categories: string[]): void {
+    console.log(categories);
+    const newCategories = {
+      categories: categories.filter(category => category !== deleteCategory)
     };
     this.afs.collection('users').doc(userUid)
       .set(newCategories);

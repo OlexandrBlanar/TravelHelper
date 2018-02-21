@@ -58,10 +58,10 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
     if (this.placeInfo.name) {
       console.log(this.newCategory);
       this.placeInfo.latLng = this.placeInfo.geometry.location;
-      this.mapService.addMarker(this.userUid, this.placeInfo, this.newCategory || this.selectedCat);
+      this.dbService.addMarker(this.userUid, this.placeInfo, this.newCategory || this.selectedCat);
     } else {
       this.placeInfo.name = '_' + Math.random().toString(36).substr(2, 9);
-      this.mapService.addMarker(this.userUid, this.placeInfo, this.newCategory || this.selectedCat);
+      this.dbService.addMarker(this.userUid, this.placeInfo, this.newCategory || this.selectedCat);
     }
     if (this.newCategory) {
       this.dbService.addCategory(this.userUid, this.newCategory, this.categories);

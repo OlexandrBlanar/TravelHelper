@@ -76,6 +76,7 @@ export class MapComponent implements OnDestroy, OnInit {
 
   setNewCoords(): void {
     this.coords = this.automplete.getPlace().geometry.location;
+    this.zoom = 2;
     this.map.setCenter(this.coords);
   }
 

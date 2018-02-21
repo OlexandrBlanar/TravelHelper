@@ -11,10 +11,11 @@
     <ul>
       <li *ngFor="let marker of filteredMarkers" #ival>
         {{ marker["name"] }}
-        <input type="button" value="delete marker" (click)="deleteMarker(ival.innerText)">
+        <input type="button" value="delete marker" (click)="deleteMarker(ival.innerText.trim())">
       </li>
     </ul>
   </div>
 </div>
 <input type="text" [(ngModel)]="newCategory">
 <input type="button" value="Add category" (click)="onAddCategory()">
+<input type="button" value="Delete category" (click)="onDeleteCategory()">

@@ -48,6 +48,15 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.newCategory = '';
   }
 
+  onDeleteCategory(): void {
+    (this.markers as any).forEach(marker => {
+      if (marker.category === this.selectedCat) {
+        this.dbService.deleteMarker(this.userUid, marker.name);
+      }
+    });
+    this.dbService.deleteCategory(this.userUid, this.selectedCat, this.categories);
+  }
+
   onChange(selectedCat: string): void {
     this.filteredMarkers = (this.markers as any).filter(marker => marker.category === selectedCat);
   }
