@@ -1,0 +1,23 @@
+.navbar {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.navbar-nav{
+	display: flex;
+	flex-basis: 30%;
+	flex-wrap: wrap;
+}
+
+.nav-item {
+	flex-grow: 1;
+}
+
+.form-inline {
+	flex-grow: 1;
+	text-align: end;
+}
+
+li {
+	list-style-type: none;
+}
