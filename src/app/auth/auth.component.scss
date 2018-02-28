@@ -6,15 +6,14 @@ $color-input: #fff;
 	flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 300px;
 }
 .auth-nav {
 	display: flex;
-	width: 100%;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
     flex-wrap: wrap;
-    height: 300px;
-    text-align: center;
+    // text-align: center;
 }
 
 a {
@@ -45,6 +44,15 @@ a {
     &:after {
         border-bottom-color: $color-input;
     }
+}
+
+#sign-in.active ~ input.sign-in,
+#sign-up.active ~ input.sign-up,
+#reset.active ~ input.reset {
+    max-height: 40px;
+    padding: 10px;
+    margin: 10px 0;
+    opacity: 1;
 }
 
 .active {
