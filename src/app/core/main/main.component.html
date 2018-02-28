@@ -2,8 +2,12 @@
     <th-header></th-header>
     <th-navbar></th-navbar>
     <article class="content">
-      <router-outlet></router-outlet>
-      <th-info-place></th-info-place>
+      <div class="router-outlet">
+        <router-outlet></router-outlet>
+    </div>
+      <div class="info-place">
+        <th-info-place></th-info-place>
+    </div>
     </article>
     <th-footer></th-footer>
 </div>
