@@ -1,0 +1,58 @@
+// colors
+$color-body: #1abc9c;
+$color-accent: #16a085;
+$color-input: #fff;
+
+
+
+//    style input fields (note hidden by default) 
+input:not([type="radio"]) {
+    appearance: none;
+    background-color: $color-input;
+    display: block;
+    transition: 300ms ease;
+    border-radius: 7px;
+    border: 0;
+    max-height: 0;
+    margin: 0;
+    padding: 0 10px;
+    overflow: hidden;
+    width: 250px;
+    opacity: 0;
+    font-size: 16px;
+    text-align: center;
+    outline: 0;
+}
+
+//    show input based on radio selection 
+#sign-in.active ~ input.sign-in,
+#sign-up.active ~ input.sign-up,
+#reset.active ~ input.reset {
+    max-height: 40px;
+    padding: 10px;
+    margin: 10px 0;
+    opacity: 1;
+}
+
+
+//    submit button 
+button {
+    width: 250px;
+    height: 40px;
+    border-radius: 7px;    
+    background-color: $color-accent;
+    font-size: 0;
+    &:before { font-size: 16px; }
+}
+
+//    show botton text based on radio selection
+[id="sign-in"].active ~ button:before { content: 'Sign In'; }
+[id="sign-up"].active ~ button:before { content: 'Sign Up'; }
+[id="reset"].active ~ button:before { content: 'Reset password'; }
+
+
+
+body {
+    background-color: $color-body;
+    font-size: 16px;
+}
