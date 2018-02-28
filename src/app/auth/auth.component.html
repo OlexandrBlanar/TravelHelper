@@ -1,21 +1,13 @@
 <div class="auth">
-  <div class="auth-container">
-    <div class="card">
-      <header class="auth-header">
-        <h1 class="auth-title">
-          <div class="logo">
-            <span class="l l1"></span>
-            <span class="l l2"></span>
-            <span class="l l3"></span>
-            <span class="l l4"></span>
-            <span class="l l5"></span>
-          </div>
-          Планувальник подорожей
-        </h1>
-      </header>
-      <div class="auth-content">
-        <router-outlet></router-outlet>
-      </div>
-    </div>
+  <header class="auth-header">
+    Зареєструйтесь або авторизуйтесь будь-ласка
+  </header>
+  <nav class="auth-nav">
+    <a id="sign-in" routerLink="/login" routerLinkActive="active">Sign in</a>
+    <a id="sign-up" routerLink="/registration" routerLinkActive="active">Sign up</a>
+    <a id="reset" routerLink="/reset" routerLinkActive="active">Reset</a>
+  </nav>
+  <div class="auth-content">
+    <router-outlet></router-outlet>
   </div>
 </div>

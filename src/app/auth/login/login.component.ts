@@ -24,19 +24,19 @@ export class LoginComponent implements OnInit {
   public form: FormGroup;
 
   private formErrors = {
-      "email": "",
-      "password": "",
+      'email': '',
+      'password': '',
   };
 
   private validationMessages = {
-      "email": {
-          "required": "Email не может быть пустым.",
-          "email": "Введен неправильный email",
-        //   "forbiddenEmails": "Email уже занят.",
+      'email': {
+          'required': 'Email не может быть пустым.',
+          'email': 'Введен неправильный email',
+        //   'forbiddenEmails': 'Email уже занят.',
       },
-      "password": {
-          "required": "Пароль не может быть пустым.",
-          "minlength": "Значение должно быть не менее 5 символов.",
+      'password': {
+          'required': 'Пароль не может быть пустым.',
+          'minlength': 'Значение должно быть не менее 5 символов.',
       },
   };
 
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
 
-    this.message = new Message('danger', '')
+    this.message = new Message('danger', '');
     // this.route.queryParams
     //   .subscribe((params: Params) => {
     //     if (params['nowCanLogin']) {
@@ -89,23 +89,23 @@ export class LoginComponent implements OnInit {
 
   onValueChange(data?: any): void {
       if (!this.form) return;
-
+      
       for (let field in this.formErrors) {
-          this.formErrors[field] = "";
+          this.formErrors[field] = '';
 
           const control = this.form.get(field);
           if (control && control.touched && control.invalid) {
               let message = this.validationMessages[field];
               for (let key in control.errors) {
-                  this.formErrors[field] += message[key] + " ";
+                  this.formErrors[field] += message[key] + ' ';
               }
           }
-      }this.user
+      }
   }
 
   login(): void {
-      const email = this.form.get("email");
-      const password = this.form.get("password");
+      const email = this.form.get('email');
+      const password = this.form.get('password');
 
       this.authService.login(email.value, password.value)
         .then(value => {
