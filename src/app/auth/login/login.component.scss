@@ -4,7 +4,6 @@ $color-accent: #16a085;
 $color-input: #fff;
 
 input {
-    appearance: none;
     background-color: $color-input;
     display: block;
     transition: 300ms ease;
@@ -15,23 +14,17 @@ input {
     padding: 10px;
     overflow: hidden;
     width: 250px;
-    opacity: 1;
     font-size: 16px;
     text-align: center;
     outline: 0;
 }
 
 button {
-    width: 250px;
+    width: 270px;
     height: 40px;
     border: 0px;
     border-radius: 7px;    
     background-color: $color-accent;
-    font-size: 0;
-    &:before { font-size: 16px; }
-}
-
-body {
-    background-color: $color-body;
     font-size: 16px;
+    &:before { font-size: 16px; }
 }

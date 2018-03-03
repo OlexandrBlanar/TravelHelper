@@ -1,4 +1,4 @@
-$color-accent: #16a085;
+$color-accent: #0a836b;
 $color-input: #fff;
 
 .auth {
@@ -16,6 +16,7 @@ $color-input: #fff;
 
 header {
     display: block;
+    margin-bottom: 20px;
 }
 .auth-nav {
     width: 270px;
@@ -25,6 +26,7 @@ a {
     position: relative;
     display: inline-block;
     text-align: center;
+    text-decoration: none;
     font-weight: 700;
     cursor: pointer;
     color: $color-accent;
@@ -49,17 +51,4 @@ a {
     &:after {
         border-bottom-color: $color-input;
     }
-}
-
-#sign-in.active ~ input.sign-in,
-#sign-up.active ~ input.sign-up,
-#reset.active ~ input.reset {
-    max-height: 40px;
-    padding: 10px;
-    margin: 10px 0;
-    opacity: 1;
-}
-
-.active {
-	color: rgb(24, 107, 24);
 }
