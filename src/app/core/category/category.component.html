@@ -6,16 +6,18 @@
           <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
         </ng-container>
       </select>
+      <input type="button" value="Delete category" (click)="onDeleteCategory()">
   </div>
   <div class="markers">
     <ul>
-      <li *ngFor="let marker of filteredMarkers" #ival>
-        {{ marker["name"] }}
-        <input type="button" value="delete marker" (click)="deleteMarker(ival.innerText.trim())">
+      <li *ngFor="let marker of filteredMarkers">
+        {{ marker.name }}
+        <button type="button" class="btn-picto" (click)="deleteMarker(marker.name)">
+          <i class="material-icons">delete</i>
+        </button>
       </li>
     </ul>
   </div>
 </div>
-<input type="text" [(ngModel)]="newCategory">
+<input type="text" [(ngModel)]="newCategory" placeholder="Category name">
 <input type="button" value="Add category" (click)="onAddCategory()">
-<input type="button" value="Delete category" (click)="onDeleteCategory()">

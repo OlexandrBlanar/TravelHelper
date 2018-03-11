@@ -1,0 +1,104 @@
+$color-accent: #16a085;
+$color-input: #fff;
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialicons/v36/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+  
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+.btn-picto {
+	border:none;
+	background:none;
+	-webkit-appearance:none;
+	cursor:pointer;
+    color:#FFF;
+    outline: none;
+}
+
+select {
+    margin-bottom: 15px;
+    margin-right: 25px;
+	background: transparent;
+	border: none;
+	border-radius: 6px;
+	font-size: 14px;
+	height: 29px;
+	padding: 5px; /* If you add too much padding here, the options won't show in IE */
+	width: 200px;
+	background-color: $color-accent;
+}
+
+ul {
+    padding-right: 25px;
+    max-width: 800px;
+    list-style: none;
+}
+
+li {
+	display:flex;
+	margin:0 -3rem 4px;
+	padding:0.5rem 2rem;
+	justify-content:space-between;
+	align-items:center;
+	background:rgba(255,255,255,0.1);
+}
+
+li input {
+	display: inline-block;
+	width: 150px;
+	height: 30px;
+	padding: 0px; 
+}
+
+input[type="button"] {
+    display: inline-block;
+	width: 150px;
+	height: 30px;
+	padding: 0px; 
+    border: 0px;
+    border-radius: 7px;    
+    background-color: $color-accent;
+    text-align: center;
+    cursor: pointer;
+    &:before { font-size: 16px; }
+}
+
+input[type="text"] {
+    margin-right: 25px;
+}
+
+input {
+    background-color: $color-input;
+    display: inline-block;
+    transition: 300ms ease;
+    border-radius: 7px;
+    box-sizing: border-box;
+    border: 0;
+    max-height: 30px;
+    margin: 10px 0;
+    padding: 6px;
+    overflow: hidden;
+    width: 200px;
+    font-size: 14px;
+    text-align: left;
+    outline: 0;
+    &:hover {background-color: #18dfb7;}
+}

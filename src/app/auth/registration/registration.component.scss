@@ -1,0 +1,41 @@
+$color-accent: #16a085;
+$color-input: #fff;
+
+input {
+    background-color: $color-input;
+    display: block;
+    transition: 300ms ease;
+    border-radius: 7px;
+    border: 0;
+    max-height: 40px;
+    margin: 10px 0;
+    padding: 10px;
+    overflow: hidden;
+    width: 250px;
+    font-size: 16px;
+    text-align: center;
+    outline: 0;
+}
+
+button {
+    width: 270px;
+    height: 40px;
+    border: 0px;
+    border-radius: 7px;    
+    background-color: $color-accent;
+    font-size: 16px;
+    &:before { font-size: 16px; }
+}
+
+.form-help-text {
+    font-size: 12px;
+}
+
+.has-error {
+    color: red;
+}
+
+.checkbox {
+    display: inline-block;
+    width: auto;
+}

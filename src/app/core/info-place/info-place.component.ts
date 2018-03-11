@@ -21,6 +21,7 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
   categories: string[];
   newCategory: string;
   selectedCat: string;
+  isModal: Boolean = false;
 
   constructor(
     private mapService: MapService,
@@ -67,6 +68,14 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
       this.dbService.addCategory(this.userUid, this.newCategory, this.categories);
       this.newCategory = '';
     }
+  }
+
+  openModal(): void {
+    this.isModal = true;
+  }
+
+  closeModal(): void {
+    this.isModal = false;
   }
 
   ngOnDestroy() {

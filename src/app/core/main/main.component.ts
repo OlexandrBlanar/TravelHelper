@@ -21,18 +21,20 @@ export class MainComponent implements OnInit, OnDestroy {
       this.dbService.userUid$.next(user.uid);
       this.subCategories = this.dbService.getCategories(user.uid)
         .subscribe(data => {
-          if (Object.keys(data).length !== 0) {
-            this.dbService.categories$.next(data.categories);
-          }
+          this.dbService.categories$.next(data.categories);
+          // if (Object.keys(data).length !== 0) {
+          //   this.dbService.categories$.next(data.categories);
+          // }
         },
         err => {
           console.error('Oops:', err.message);
         });
       this.subMarkers = this.dbService.getMarkers(user.uid)
         .subscribe(data => {
-          if (data.length !== 0) {
-            this.dbService.markers$.next(data);
-          }
+          this.dbService.markers$.next(data);
+          // if (data.length !== 0) {
+          //   this.dbService.markers$.next(data);
+          // }
           console.log(data);
         },
         err => {

@@ -15,8 +15,8 @@ import { NewPasswordComponent } from './new-password/new-password.component';
   ],
   declarations: [
     AuthComponent,
-    LoginComponent, 
-    RegistrationComponent, 
+    LoginComponent,
+    RegistrationComponent,
     NewPasswordComponent]
 })
 export class AuthModule { }

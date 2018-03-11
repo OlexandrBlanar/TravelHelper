@@ -21,27 +21,28 @@ export class RegistrationComponent implements OnInit {
   public regForm: FormGroup;
 
   private formErrors = {
-      "email": "",
-      "password": "",
-      "name": "",
-      "agree": "",
+      'email': '',
+      'password': '',
+      'repeatPassword': '',
+      'agree': '',
   };
 
   private validationMessages = {
-      "email": {
-          "required": "Email не может быть пустым.",
-          "email": "Введен неправильный email",
-        //   "forbiddenEmails": "Email уже занят.",
+      'email': {
+          'required': 'Email не может быть пустым.',
+          'email': 'Введен неправильный email',
+        //   'forbiddenEmails': 'Email уже занят.',
       },
-      "password": {
-          "required": "Пароль не может быть пустым.",
-          "minlength": "Значение должно быть не менее 5 символов.",
+      'password': {
+          'required': 'Пароль не может быть пустым.',
+          'minlength': 'Значение должно быть не менее 5 символов.',
       },
-      "name": {
-            "required": "Имя не может быть пустым.",
+      'repeatPassword': {
+          'required': 'Пароль не может быть пустым.',
+          'minlength': 'Значение должно быть не менее 5 символов.',
       },
-      "agree": {
-            "required": "Обязательное поле.",
+      'agree': {
+            'required': 'Обязательное поле.',
       }
   };
 
@@ -52,7 +53,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.message = new Message('danger', '')
+      this.message = new Message('danger', '');
       this.buildForm();
   }
 
@@ -60,35 +61,48 @@ export class RegistrationComponent implements OnInit {
       this.regForm = new FormGroup({
             'email': new FormControl(null, [Validators.required, Validators.email]),
             'password': new FormControl(null, [Validators.required, Validators.minLength(6)]),
-            'name': new FormControl(null, [Validators.required]),
+            'repeatPassword': new FormControl(null, [Validators.required, Validators.minLength(6)]),
             'agree': new FormControl(false, [Validators.requiredTrue])
       });
 
       this.regForm.valueChanges
-          .subscribe(data => this.onValueChange(data));
+          .subscribe(data => this.onValueChange());
       this.onValueChange();
   }
 
   onValueChange(data?: any): void {
-      if (!this.regForm) return;
+      if (!this.regForm) {
+          return;
+      }
 
-      for (let field in this.formErrors) {
-          this.formErrors[field] = "";
+      for (const field of Object.keys(this.formErrors)) {
+          this.formErrors[field] = '';
 
           const control = this.regForm.get(field);
           if (control && control.touched && control.invalid) {
-              let message = this.validationMessages[field];
-              for (let key in control.errors) {
-                  this.formErrors[field] += message[key] + " ";
+              const message = this.validationMessages[field];
+              for (const key of Object.keys(control.errors)) {
+                  this.formErrors[field] += message[key] + ' ';
               }
           }
       }
   }
 
   signup(): void {
-      const email = this.regForm.get("email");
-      const password = this.regForm.get("password");
-      const name = this.regForm.get("name");
+      const email = this.regForm.get('email');
+      const password = this.regForm.get('password');
+      const repeatPassword = this.regForm.get('repeat-password');
+      const name = this.regForm.get('name');
+
+      if (password !== repeatPassword) {
+        this.formErrors.repeatPassword = 'Паролі не співпадають';
+        this.authService.showMessage.call(this, {
+            text: 'Введіть однаковий пароль',
+            type: 'danger',
+        });
+
+        return;
+      }
 
       this.authService.signup(email.value, password.value)
         .then(value => {
@@ -100,7 +114,6 @@ export class RegistrationComponent implements OnInit {
                 text: `Something went wrong: ${err.message}`,
                 type: 'danger',
             });
-            this
             console.log('Something went wrong:', err.message);
         });
   }

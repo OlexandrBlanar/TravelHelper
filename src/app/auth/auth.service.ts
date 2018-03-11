@@ -28,6 +28,12 @@ export class AuthService {
             .signInWithEmailAndPassword(email, password);
   }
 
+  reset(email: string): Promise<any> {
+    return this.firebaseAuth
+            .auth
+            .sendPasswordResetEmail(email);
+  }
+
   logout() {
     this.firebaseAuth
       .auth

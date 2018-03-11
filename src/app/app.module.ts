@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './auth/auth.service';
+import { AuthGuardService } from './auth/auth-guard.service';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/auth.module';
@@ -38,7 +39,7 @@ import { DbService } from './shared/services/db.service';
     CoreModule,
     SharedModule
   ],
-  providers: [AuthService, MapService, InfoPlaceService, DbService],
+  providers: [AuthService, MapService, InfoPlaceService, DbService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

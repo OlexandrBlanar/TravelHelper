@@ -38,6 +38,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.dbService.markers$
       .takeUntil(this.ngUnsubscribe)
       .subscribe(markers => {
+        console.log(markers);
         this.markers = markers;
         this.onChange(this.selectedCat);
       });
@@ -59,6 +60,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   onChange(selectedCat: string): void {
     this.filteredMarkers = (this.markers as any).filter(marker => marker.category === selectedCat);
+    console.log(this.filteredMarkers);
   }
 
   deleteMarker(marker) {

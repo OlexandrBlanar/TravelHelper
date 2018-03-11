@@ -7,8 +7,9 @@
       <a class="nav-link" [routerLink]="['/category']" routerLinkActive="active">Category</a>
     </li>
   </ul>
-  <form class="form-inline my-2 my-lg-0">
-    <button (click)="login()" *ngIf="!(user | async)" class="btn btn-outline-success my-2 my-sm-0" type="submit">Login in</button>
-    <button (click)="logout()" *ngIf="user | async" class="btn btn-outline-success my-2 my-sm-0" type="submit" >Logout</button>
-  </form>
+  <div class="logout">
+    <button class="btn-picto" (click)="logout()" type="submit">
+        <i class="material-icons">exit_to_app</i>
+    </button>
+  </div>
 </nav>

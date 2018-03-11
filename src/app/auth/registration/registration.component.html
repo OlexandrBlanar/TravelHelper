@@ -1,4 +1,3 @@
-<p class="text-xs-center">Реєстрація для отримання доступу</p>
 <div
 class="alert alert-{{message.type}}"
 *ngIf="message.text"
@@ -10,7 +9,6 @@ class="alert alert-{{message.type}}"
     class="form-group"
     [ngClass]="{'has-error': formErrors.email}"
   >
-    <label for="email">Email</label>
     <input
       type="text"
       class="form-control underlined"
@@ -21,7 +19,7 @@ class="alert alert-{{message.type}}"
     <span
       class="form-help-text"
       *ngIf="formErrors.email"
-    >onSubmit
+    >
       {{ formErrors.email }}
     </span>
   </div>
@@ -29,7 +27,6 @@ class="alert alert-{{message.type}}"
     class="form-group"
     [ngClass]="{'has-error': formErrors.password}"
   >
-    <label for="password">Пароль</label>
     <input
       type="password"
       class="form-control underlined"
@@ -46,21 +43,20 @@ class="alert alert-{{message.type}}"
   </div>
   <div
     class="form-group"
-    [ngClass]="{'has-error': formErrors.name}"
+    [ngClass]="{'has-error': formErrors.repeatPassword}"
   >
-    <label for="name">Iм'я</label>
     <input
       type="text"
       class="form-control underlined"
-      id="name"
-      placeholder="Введіть ім'я"
-      formControlName="name"
+      id="repeatPassword"
+      placeholder="Повторіть пароль"
+      formControlName="repeatPassword"
     >
     <span
       class="form-help-text"
-      *ngIf="formErrors.name"
+      *ngIf="formErrors.repeatPassword"
     >
-      {{ formErrors.name }}
+      {{ formErrors.repeatPassword }}
     </span>
   </div>
   <div
@@ -85,13 +81,5 @@ class="alert alert-{{message.type}}"
     >
       Зареєструватися
     </button>
-  </div>
-  <div class="form-group">
-    <p class="text-muted text-xs-center">
-      Вже є аккаунт?
-      <a [routerLink]="'/login'">
-        Ввійти!
-      </a>
-    </p>
   </div>
 </form>

@@ -48,6 +48,7 @@ export class DbService {
   }
 
   deleteMarker(userUid: string, marker: string): void {
+    console.log(marker);
     (this.afs as any).collection('users').doc(userUid).collection('markers').doc(marker)
       .delete()
       .then(() => console.log('Marker successfully deleted'))
