@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MapService } from '../map/map.service';
+import { MapService } from '../map.service';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../../auth/auth.service';
 
-import { wikiUrl } from '../../shared/constants';
+import { wikiUrl } from '../constants/constants';
 import { InfoPlaceService } from './info-place.service';
-import { DbService } from '../../shared/services/db.service';
+import { DbService } from '../../core/services/db.service';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { wikiUrl } from '../../shared/constants';
+import { wikiUrl } from '../constants/constants';
 
 @Injectable()
 export class InfoPlaceService {

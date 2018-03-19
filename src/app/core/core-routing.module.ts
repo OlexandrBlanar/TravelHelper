@@ -15,7 +15,7 @@ const routes: Routes = [
     {
       path: 'map',
       loadChildren: '../map/map.module#MapModule',
-      canLoad: [AuthGuardService]
+      // canLoad: [AuthGuardService]
     },
   ]}
 ];

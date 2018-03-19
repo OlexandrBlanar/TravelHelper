@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Router, CanActivate } from '@angular/router';
+import { Router, CanLoad } from '@angular/router';
 import { AuthService } from './auth.service';
+import 'rxjs/add/operator/take';
 
 @Injectable()
-export class AuthGuardService implements CanActivate {
-  constructor(public authService: AuthService, public router: Router) {}
-  canActivate(): Observable<boolean> | boolean {
-	// console.log(this.authService.user);
-	return this.authService.user.map((user) => {
-		if (!user) {
-			this.router.navigate(['login']);
-			return false;
-		} else {
-			return true;
-		}
-	});
-  }
+export class AuthGuardService implements CanLoad {
+	constructor(public authService: AuthService, public router: Router) { }
+	canLoad(): Observable<boolean> | boolean {
+		console.log('canactivate');
+		return this.authService.user.take(1).map((user) => {
+			if (!user) {
+				this.router.navigate(['login']);
+				console.log('false');
+				return false;
+			} else {
+				console.log('true');
+				return true;
+			}
+		});
+	}
 }

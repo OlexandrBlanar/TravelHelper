@@ -12,7 +12,7 @@
   <div class="markers">
     <ul>
       <li *ngFor="let marker of filteredMarkers">
-        {{ marker.name }}
+        {{ marker["name"] }}
         <button type="button" class="btn-picto" (click)="deleteMarker(marker.name)">
           <i class="material-icons">delete</i>
         </button>
