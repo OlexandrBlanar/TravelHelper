@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../../auth/auth.service';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { DbService } from '../../shared/services/db.service';
+import { DbService } from '../services/db.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({

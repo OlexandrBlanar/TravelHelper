@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../auth.service';
-import { Message } from '../../shared/models/message';
+import { Message } from '../models/message';
 
 @Component({
   selector: 'th-new-password',

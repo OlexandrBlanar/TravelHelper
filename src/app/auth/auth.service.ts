@@ -1,4 +1,4 @@
-import { Message } from './../shared/models/message';
+import { Message } from './models/message';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 

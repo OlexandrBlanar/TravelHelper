@@ -1,5 +1,5 @@
 import { OnInit } from '@angular/core';
-import { ICoords } from './map.service';
+import { Coords } from './models/coords';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
@@ -7,11 +7,6 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/finally';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
-export interface ICoords {
-    lat: number;
-    lng: number;
-}
 
 @Injectable()
 

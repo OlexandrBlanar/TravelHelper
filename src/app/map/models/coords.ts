@@ -4,4 +4,3 @@ export class Coords {
       public lng: number
     ) {}
   }
-  

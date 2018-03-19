@@ -1,7 +1,7 @@
-import { Message } from './../../shared/models/message';
+import { Message } from '../models/message';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { User } from './../../shared/models/user';
+import { User } from '../models/user';
 import { AuthService } from './../auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';

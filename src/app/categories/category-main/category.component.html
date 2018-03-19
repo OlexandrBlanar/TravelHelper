@@ -2,6 +2,7 @@
   <div class="header-component-categories">
       <h1>Вибір категорії</h1>
       <select name="categories" id="cat" [(ngModel)]="selectedCat" (ngModelChange)="onChange($event)">
+        <option selected hidden value="">Choose here</option>
         <ng-container *ngIf="categories">
           <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
         </ng-container>

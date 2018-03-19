@@ -1,9 +1,9 @@
-import { Coords } from './../../shared/models/coords';
+import { Coords } from '../models/coords';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../../auth/auth.service';
-import { MapService } from './map.service';
-import { DbService } from '../../shared/services/db.service';
+import { MapService } from '../map.service';
+import { DbService } from '@core/services/db.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/takeUntil';

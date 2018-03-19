@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-// import { CategoryService } from './category.service';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../../auth/auth.service';
-import { DbService } from '../../shared/services/db.service';
+import { DbService } from '@core/services/db.service';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
 
@@ -18,6 +17,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
   newCategory: string;
   markers: Object[];
   selectedCat: string = null;
+  deleteCat: string = null;
   filteredMarkers: string[];
 
   constructor(private dbService: DbService) {  }
@@ -29,9 +29,12 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.dbService.categories$
       .takeUntil(this.ngUnsubscribe)
       .subscribe(categories => {
-        if (this.selectedCat === null && categories[0]) {
+        if (this.selectedCat === (null || undefined) && categories[0]) {
           this.selectedCat = categories[0];
           console.log(this.selectedCat);
+        }
+        if (this.deleteCat === this.selectedCat) {
+          this.selectedCat = categories[0];
         }
         this.categories = categories;
       });
@@ -56,14 +59,16 @@ export class CategoryComponent implements OnInit, OnDestroy {
       }
     });
     this.dbService.deleteCategory(this.userUid, this.selectedCat, this.categories);
+    this.deleteCat = this.selectedCat;
+    console.log(this.selectedCat);
   }
 
   onChange(selectedCat: string): void {
     this.filteredMarkers = (this.markers as any).filter(marker => marker.category === selectedCat);
-    console.log(this.filteredMarkers);
+    console.log(this.selectedCat);
   }
 
-  deleteMarker(marker) {
+  deleteMarker(marker: string): void {
     this.dbService.deleteMarker(this.userUid, marker);
   }
 

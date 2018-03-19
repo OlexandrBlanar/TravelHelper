@@ -16,9 +16,8 @@ import { environment } from './../environments/environment';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { MapService } from './core/map/map.service';
-import { InfoPlaceService } from './core/info-place/info-place.service';
-import { DbService } from './shared/services/db.service';
+import { MapService } from './map/map.service';
+import { DbService } from './core/services/db.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +38,7 @@ import { DbService } from './shared/services/db.service';
     CoreModule,
     SharedModule
   ],
-  providers: [AuthService, MapService, InfoPlaceService, DbService, AuthGuardService],
+  providers: [AuthService, MapService, DbService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -65,10 +65,11 @@ export class DbService {
   }
 
   deleteCategory(userUid: string, deleteCategory: string, categories: string[]): void {
-    console.log(categories);
     const newCategories = {
       categories: categories.filter(category => category !== deleteCategory)
     };
+    console.log(deleteCategory);
+    console.log(newCategories);
     this.afs.collection('users').doc(userUid)
       .set(newCategories);
   }
