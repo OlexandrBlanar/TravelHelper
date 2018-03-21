@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'th-root',

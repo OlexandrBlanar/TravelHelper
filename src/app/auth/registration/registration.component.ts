@@ -1,11 +1,12 @@
-import { Message } from '../models/message';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { User } from '../models/user';
-import { AuthService } from './../auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { AuthService } from './../auth.service';
+import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
+import { Message } from '../models/message';
+
 
 @Component({
   selector: 'th-registration',
@@ -14,11 +15,11 @@ import * as firebase from 'firebase/app';
 })
 export class RegistrationComponent implements OnInit {
 
-  public message: Message;
-  public email: string;
-  public password: string;
-  public user: Observable<firebase.User>;
-  public regForm: FormGroup;
+  message: Message;
+  email: string;
+  password: string;
+  user: Observable<firebase.User>;
+  regForm: FormGroup;
 
   private formErrors = {
       'email': '',
@@ -66,11 +67,11 @@ export class RegistrationComponent implements OnInit {
       });
 
       this.regForm.valueChanges
-          .subscribe(data => this.onValueChange());
+          .subscribe(() => this.onValueChange());
       this.onValueChange();
   }
 
-  onValueChange(data?: any): void {
+  onValueChange(): void {
       if (!this.regForm) {
           return;
       }
@@ -92,7 +93,6 @@ export class RegistrationComponent implements OnInit {
       const email = this.regForm.get('email');
       const password = this.regForm.get('password');
       const repeatPassword = this.regForm.get('repeat-password');
-      const name = this.regForm.get('name');
 
       if (password !== repeatPassword) {
         this.formErrors.repeatPassword = 'Паролі не співпадають';
@@ -117,47 +117,4 @@ export class RegistrationComponent implements OnInit {
             console.log('Something went wrong:', err.message);
         });
   }
-
-  // formReg: FormGroup;
-
-  // constructor(
-  //   private authService: AuthService,
-  // ) { }
-
-  // ngOnInit() {
-  //   this.formReg = new FormGroup({
-  //     'email': new FormControl(null, [Validators.required, Validators.email], this.forbiddenEmails.bind(this)),
-  //     'password': new FormControl(null, [Validators.required, Validators.minLength(6)]),
-  //     'name': new FormControl(null, [Validators.required]),
-  //     'agree': new FormControl(false, [Validators.requiredTrue])
-  //   });
-  // }
-
-  // onSubmit() {
-  //   const {email, password, name} = this.formReg.value;
-  //   const user = new User(email, import { ReactiveFormsModule }   from '@angular/forms';password, name);
-
-  //   this.usersService.createNewUser(user)
-  //     .subscribe(() => {
-  //       this.router.navigate(['/login'], {
-  //         queryParams: {
-  //           nowCanLogin: true
-  //         }
-  //       });
-  //     });
-  // }
-
-//   forbiddenEmails(control: FormControl): Promise<any> {
-//     return new Promise((resolve, reject) => {
-//       this.usersService.getUserByEmail(control.value)
-//         .subscribe((user: User) => {
-//           if (user) {
-//             resolve({forbiddenEmail: true});
-//           } else {
-//             resolve(null);
-//           }
-//         });
-//     });
-//   }
-
 }

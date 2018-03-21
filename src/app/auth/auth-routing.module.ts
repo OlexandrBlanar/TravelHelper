@@ -7,11 +7,24 @@ import { AuthComponent } from './auth.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
 
 const routes: Routes = [
-  {path: '', component: AuthComponent, children: [
-    {path: 'login', component: LoginComponent},
-    {path: 'registration', component: RegistrationComponent},
-    {path: 'reset', component: NewPasswordComponent}
-  ]}
+  {
+    path: '',
+    component: AuthComponent,
+    children: [
+      {
+        path: 'login',
+        component: LoginComponent
+      },
+      {
+        path: 'registration',
+        component: RegistrationComponent
+      },
+      {
+        path: 'reset',
+        component: NewPasswordComponent
+      }
+    ]
+  }
 ];
 
 @NgModule({

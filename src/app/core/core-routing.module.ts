@@ -1,9 +1,8 @@
-import { MainComponent } from './main/main.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuardService } from '../auth/auth-guard.service';
 
-
+import { MainComponent } from './main/main.component';
+import { AuthGuardService } from '@auth/auth-guard.service';
 
 const routes: Routes = [
   {path: '', component: MainComponent, children: [
@@ -15,7 +14,7 @@ const routes: Routes = [
     {
       path: 'map',
       loadChildren: '../map/map.module#MapModule',
-      // canLoad: [AuthGuardService]
+      canLoad: [AuthGuardService]
     },
   ]}
 ];

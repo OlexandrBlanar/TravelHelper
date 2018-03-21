@@ -1,11 +1,11 @@
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+
 // import { fadeStateTrigger } from './../../shared/animations/fade.animation';
-import { Message } from '../models/message';
-import { Observable } from 'rxjs/Observable';
-import { User } from '../models/user';
-import { AuthService } from './../auth.service';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {Message} from '../models/message';
+import {Observable} from 'rxjs/Observable';
+import {AuthService} from './../auth.service';
 import * as firebase from 'firebase/app';
 
 @Component({
@@ -17,34 +17,32 @@ import * as firebase from 'firebase/app';
 
 export class LoginComponent implements OnInit {
 
-  public message: Message;
-  public email: string;
-  public password: string;
-  public user: Observable<firebase.User>;
-  public form: FormGroup;
+  message: Message;
+  email: string;
+  password: string;
+  user: Observable<firebase.User>;
+  form: FormGroup;
 
   private formErrors = {
-      'email': '',
-      'password': '',
+    'email': '',
+    'password': '',
   };
 
   private validationMessages = {
-      'email': {
-          'required': 'Email не может быть пустым.',
-          'email': 'Введен неправильный email',
-        //   'forbiddenEmails': 'Email уже занят.',
-      },
-      'password': {
-          'required': 'Пароль не может быть пустым.',
-          'minlength': 'Значение должно быть не менее 5 символов.',
-      },
+    'email': {
+      'required': 'Email не может быть пустым.',
+      'email': 'Введен неправильный email',
+      //   'forbiddenEmails': 'Email уже занят.',
+    },
+    'password': {
+      'required': 'Пароль не может быть пустым.',
+      'minlength': 'Значение должно быть не менее 5 символов.',
+    },
   };
 
-  constructor(
-      private authService: AuthService,
-      private router: Router
-   ) {
-      this.user = authService.user;
+  constructor(private authService: AuthService,
+              private router: Router) {
+    this.user = authService.user;
   }
 
   ngOnInit() {
@@ -64,64 +62,55 @@ export class LoginComponent implements OnInit {
     //       });
     //     }
     //   });
-      this.buildForm();
+    this.buildForm();
   }
-
-//   private showMessage(message: Message): void {
-//     this.message = message;
-
-//     window.setTimeout(() => {
-//       this.message.text = '';
-//     }, 5000);
-//   }
 
   buildForm(): void {
-      this.form = new FormGroup({
-            'email': new FormControl(null, [Validators.required, Validators.email]),
-            'password': new FormControl(null, [Validators.required, Validators.minLength(6)]),
-      });
+    this.form = new FormGroup({
+      'email': new FormControl(null, [Validators.required, Validators.email]),
+      'password': new FormControl(null, [Validators.required, Validators.minLength(6)]),
+    });
 
-      this.form.valueChanges
-          .subscribe(data => this.onValueChange(data));
+    this.form.valueChanges
+      .subscribe(() => this.onValueChange());
 
-      this.onValueChange();
+    this.onValueChange();
   }
 
-  onValueChange(data?: any): void {
+  onValueChange(): void {
     if (!this.form) {
-        return;
+      return;
     }
 
     for (const field of Object.keys(this.formErrors)) {
-        this.formErrors[field] = '';
+      this.formErrors[field] = '';
 
-        const control = this.form.get(field);
-        if (control && control.touched && control.invalid) {
-            const message = this.validationMessages[field];
-            for (const key of Object.keys(control.errors)) {
-                this.formErrors[field] += message[key] + ' ';
-            }
+      const control = this.form.get(field);
+      if (control && control.touched && control.invalid) {
+        const message = this.validationMessages[field];
+        for (const key of Object.keys(control.errors)) {
+          this.formErrors[field] += message[key] + ' ';
         }
+      }
     }
-}
+  }
 
   login(): void {
-      const email = this.form.get('email');
-      const password = this.form.get('password');
+    const email = this.form.get('email');
+    const password = this.form.get('password');
 
-      this.authService.login(email.value, password.value)
-        .then(value => {
-            this.router.navigate(['/map']);
-            console.log(firebase.auth().currentUser.uid);
-            console.log('Nice, it worked!');
-        })
-        .catch(err => {
-            this.authService.showMessage.call(this, {
-                text: `Something went wrong: ${err.message}`,
-                type: 'warning',
-            });
-            console.log('Something went wrong:', err.message);
+    this.authService.login(email.value, password.value)
+      .then(() => {
+        this.router.navigate(['/map']);
+        console.log('Nice, it worked!');
+      })
+      .catch(err => {
+        this.authService.showMessage.call(this, {
+          text: `Something went wrong: ${err.message}`,
+          type: 'warning',
         });
+        console.log('Something went wrong:', err.message);
+      });
   }
 
 }

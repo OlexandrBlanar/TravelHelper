@@ -1,9 +1,8 @@
-import { Coords } from '../models/coords';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import * as firebase from 'firebase/app';
-import { AuthService } from '../../auth/auth.service';
+
 import { MapService } from '../map.service';
 import { DbService } from '@core/services/db.service';
+import { Coords } from '../models/coords';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/takeUntil';
@@ -22,7 +21,7 @@ export class MapComponent implements OnDestroy, OnInit {
   @ViewChild('map') mapElement: ElementRef;
   @ViewChild('searchTextField') searchTextFieldElement: ElementRef;
 
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private ngUnsubscribe = new Subject<void>();
   private map: any;
   private automplete: any;
   private coords: Coords;
@@ -30,7 +29,10 @@ export class MapComponent implements OnDestroy, OnInit {
   private userUid: string;
   private locations: Object[];
 
-  constructor(private mapService: MapService, private dbService: DbService) { }
+  constructor(
+    private mapService: MapService,
+    private dbService: DbService
+  ) { }
 
   ngOnInit() {
     this.dbService.userUid$
@@ -39,7 +41,6 @@ export class MapComponent implements OnDestroy, OnInit {
     Observable.fromPromise(this.setCurrentPosition())
       .catch(error => {
           console.log(error);
-          this.initMap();
           return Observable.of(`Bad Promise: ${error}`);
         })
       .switchMap(() => {

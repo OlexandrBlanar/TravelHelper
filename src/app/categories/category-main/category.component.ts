@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import * as firebase from 'firebase/app';
-import { AuthService } from '../../auth/auth.service';
+
 import { DbService } from '@core/services/db.service';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import * as firebase from 'firebase/app';
+
 import { AuthService } from '../auth.service';
 import { Message } from '../models/message';
 
@@ -11,10 +10,9 @@ import { Message } from '../models/message';
   styleUrls: ['./new-password.component.scss']
 })
 export class NewPasswordComponent implements OnInit {
-  public email: string;
+  email: string;
   message: Message;
-  // public user: Observable<firebase.User>;
-  public form: FormGroup;
+  form: FormGroup;
   errors: string;
   constructor(private authService: AuthService) { }
 
@@ -30,9 +28,7 @@ export class NewPasswordComponent implements OnInit {
   }
 
   resetPassword(): void {
-    const auth = firebase.auth();
     const email = this.form.get('email');
-    console.log(email.value);
     this.authService.reset(email.value).then(() => {
       console.log('Success');
     }).catch((error) => {
