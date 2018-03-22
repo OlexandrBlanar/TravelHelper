@@ -1,7 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import * as firebase from 'firebase/app';
-import { AuthService } from '../../auth/auth.service';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+
 import { DbService } from '../services/db.service';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -18,28 +16,30 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.dbService.getUser().onAuthStateChanged(user => {
-      this.dbService.userUid$.next(user.uid);
-      this.subCategories = this.dbService.getCategories(user.uid)
-        .subscribe(data => {
-          this.dbService.categories$.next(data.categories);
-          // if (Object.keys(data).length !== 0) {
-          //   this.dbService.categories$.next(data.categories);
-          // }
-        },
-        err => {
-          console.error('Oops:', err.message);
-        });
-      this.subMarkers = this.dbService.getMarkers(user.uid)
-        .subscribe(data => {
-          this.dbService.markers$.next(data);
-          // if (data.length !== 0) {
-          //   this.dbService.markers$.next(data);
-          // }
-          console.log(data);
-        },
-        err => {
-          console.error('Oops:', err.message);
-        });
+      if (user) {
+        this.dbService.userUid$.next(user.uid);
+        this.subCategories = this.dbService.getCategories(user.uid)
+          .subscribe(data => {
+              this.dbService.categories$.next(data.categories);
+              // if (Object.keys(data).length !== 0) {
+              //   this.dbService.categories$.next(data.categories);
+              // }
+            },
+            err => {
+              console.error('Oops:', err.message);
+            });
+        this.subMarkers = this.dbService.getMarkers(user.uid)
+          .subscribe(data => {
+              this.dbService.markers$.next(data);
+              // if (data.length !== 0) {
+              //   this.dbService.markers$.next(data);
+              // }
+              console.log(data);
+            },
+            err => {
+              console.error('Oops:', err.message);
+            });
+      }
     });
   }
 

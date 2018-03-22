@@ -28,6 +28,7 @@ export class MapComponent implements OnDestroy, OnInit {
   private zoom: number;
   private userUid: string;
   private locations: Object[];
+  private labels: string[] = [];
 
   constructor(
     private mapService: MapService,
@@ -48,6 +49,7 @@ export class MapComponent implements OnDestroy, OnInit {
       })
       .takeUntil(this.ngUnsubscribe)
       .map(markers => markers.map(marker => {
+        this.labels.push(marker.name);
         return {
         lat: marker.lat,
         lng: marker.lng
@@ -64,9 +66,15 @@ export class MapComponent implements OnDestroy, OnInit {
       zoom: this.zoom,
       center: this.coords
     });
-    const markers = this.locations.map(location => {
+    const markers = this.locations.map((location, i) => {
       return new google.maps.Marker({
         position: location,
+        label: {
+          text: this.labels[i],
+          color: "#eb3a44",
+          fontSize: "16px",
+          fontWeight: "bold"
+        },
         map: this.map
       });
     });

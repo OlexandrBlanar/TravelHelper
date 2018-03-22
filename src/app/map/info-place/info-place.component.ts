@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MapService } from '../map.service';
-import * as firebase from 'firebase/app';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '@auth/auth.service';
 
 import { wikiUrl } from '../constants/constants';
 import { InfoPlaceService } from './info-place.service';
-import { DbService } from '../../core/services/db.service';
+import { DbService } from '@core/services/db.service';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
 
@@ -49,13 +48,13 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
       .takeUntil(this.ngUnsubscribe)
       .subscribe(placeInfo => {
         this.placeInfo = placeInfo;
-        if (placeInfo.name) {
-          this.infoPlaceService.getWikiInfo(placeInfo.name);
+        if (this.placeInfo.name) {
+          this.infoPlaceService.getWikiInfo(this.placeInfo.name);
         }
       });
   }
 
-  onAddMarker() {
+  onAddMarker(): void {
     if (this.placeInfo.name) {
       console.log(this.newCategory);
       this.placeInfo.latLng = this.placeInfo.geometry.location;
@@ -68,6 +67,7 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
       this.dbService.addCategory(this.userUid, this.newCategory, this.categories);
       this.newCategory = '';
     }
+    this.closeModal();
   }
 
   openModal(): void {
