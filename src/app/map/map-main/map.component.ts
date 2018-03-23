@@ -27,8 +27,7 @@ export class MapComponent implements OnDestroy, OnInit {
   private coords: Coords;
   private zoom: number;
   private userUid: string;
-  private locations: Object[];
-  private labels: string[] = [];
+  private markers: Object[];
 
   constructor(
     private mapService: MapService,
@@ -48,15 +47,8 @@ export class MapComponent implements OnDestroy, OnInit {
         return this.dbService.markers$;
       })
       .takeUntil(this.ngUnsubscribe)
-      .map(markers => markers.map(marker => {
-        this.labels.push(marker.name);
-        return {
-        lat: marker.lat,
-        lng: marker.lng
-        };
-      }))
-      .subscribe(locations => {
-        this.locations = locations;
+      .subscribe(markers => {
+        this.markers = markers;
         this.initMap();
       });
   }
@@ -66,15 +58,31 @@ export class MapComponent implements OnDestroy, OnInit {
       zoom: this.zoom,
       center: this.coords
     });
-    const markers = this.locations.map((location, i) => {
+    const markers = this.markers.map((marker) => {
+      console.log(marker);
       return new google.maps.Marker({
-        position: location,
-        label: {
-          text: this.labels[i],
-          color: "#eb3a44",
-          fontSize: "16px",
-          fontWeight: "bold"
+        position: {
+          lat: marker['lat'],
+          lng: marker['lng']
         },
+        label: {
+          text: marker['name'],
+          color: '#7a87eb',
+          fontSize: '12px',
+          fontWeight: 'normal',
+        },
+        icon: {
+          path: 'M24-28.3c-.2-13.3-7.9-18.5-8.3-18.7l-1.2-.8-1.2.8c-2 1.4-4.1 2-6.1 2-3.4 0-5.8-1.9-5.9' +
+          '-1.9l-1.3-1.1-1.3 1.1c-.1.1-2.5 1.9-5.9 1.9-2.1 0-4.1-.7-6.1-2l-1.2-.8-1.2.8c-.8.6-8 5.9-8.2 ' +
+          '18.7-.2 1.1 2.9 22.2 23.9 28.3 22.9-6.7 24.1-26.9 24-28.3z',
+          fillColor: '#00CCBB',
+          scale: 0.5,
+          fillOpacity: 0.8,
+          strokeColor: '',
+          strokeWeight: 0,
+          labelOrigin: new google.maps.Point(10, -57)
+        },
+        // map_icon_label: '<span class="map-icon map-icon-point-of-interest"></span>',
         map: this.map
       });
     });
