@@ -16,6 +16,8 @@ import { Subject } from 'rxjs/Subject';
 export class InfoPlaceComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   private userUid: string;
+  markerName: string;
+  comments: string = '';
   placeInfo: any;
   categories: string[];
   newCategory: string;
@@ -55,22 +57,25 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
   }
 
   onAddMarker(): void {
+    this.placeInfo.comments = this.comments;
     if (this.placeInfo.name) {
       console.log(this.newCategory);
       this.placeInfo.latLng = this.placeInfo.geometry.location;
       this.dbService.addMarker(this.userUid, this.placeInfo, this.newCategory || this.selectedCat);
     } else {
-      this.placeInfo.name = '_' + Math.random().toString(36).substr(2, 9);
+      this.placeInfo.name = this.markerName;
       this.dbService.addMarker(this.userUid, this.placeInfo, this.newCategory || this.selectedCat);
     }
     if (this.newCategory) {
       this.dbService.addCategory(this.userUid, this.newCategory, this.categories);
       this.newCategory = '';
     }
+    console.log(this.comments);
     this.closeModal();
   }
 
   openModal(): void {
+    console.log(this.placeInfo.name);
     this.isModal = true;
   }
 

@@ -33,7 +33,7 @@ export class DbService {
     const newMarker = {
         name: place.name,
         category: category,
-        coments: '',
+        comments: place.comments,
         lat: place.latLng.lat(),
         lng: place.latLng.lng()
     };

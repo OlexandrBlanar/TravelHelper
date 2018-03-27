@@ -2,7 +2,15 @@
   <div class="mapCover">
       <h3>My Google Maps</h3>
       <input #searchTextField type="text">
+      <select name="categories" id="cat" [(ngModel)]="selectedCat" (ngModelChange)="onChange($event)">
+        <ng-container *ngIf="categories">
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </ng-container>
+      </select>
       <div #map id="map"></div>
   </div>
   <th-info-place></th-info-place>
+</div>
+<div class="menu-rightclick" *ngIf="isMenu" [ngStyle]="coordsMenu">
+  Add marker
 </div>
