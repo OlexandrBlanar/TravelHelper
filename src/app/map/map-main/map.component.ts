@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/combineLatest';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Subject } from 'rxjs/Subject';
 
@@ -30,7 +29,9 @@ export class MapComponent implements OnDestroy, OnInit {
   private filteredMarkers: string[];
   private ngUnsubscribe = new Subject<void>();
   private map: any;
-  private automplete: any;
+  private autocomplete: any;
+  private autocompleteMarker: any;
+  private infoWindow: any;
   private coords: Coords;
   private zoom: number;
   private userUid: string;
@@ -39,7 +40,6 @@ export class MapComponent implements OnDestroy, OnInit {
   constructor(
     private mapService: MapService,
     private dbService: DbService,
-    private combaineLatest: combineLatest
   ) { }
 
   ngOnInit() {
@@ -52,24 +52,35 @@ export class MapComponent implements OnDestroy, OnInit {
           return Observable.of(`Bad Promise: ${error}`);
         })
       .switchMap(() => {
-        return Observable.combaineLatest(this.dbService.markers$, this.dbService.categories$);
+        return combineLatest(this.dbService.markers$, this.dbService.categories$);
       })
       .takeUntil(this.ngUnsubscribe)
-      .subscribe([markers, categories] => {
-        this.markers = markers;
-        if (markers[0]) {
-          this.onChange(this.selectedCat);
-          this.initMap();
-        }
-      });
-    this.dbService.categories$
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(categories => {
+      .subscribe(([markers, categories]) => {
+        this.categories = categories;
         if (this.selectedCat === null && categories[0]) {
           this.selectedCat = categories[0];
         }
-        this.categories = categories;
+        this.markers = markers;
+        if (markers[0] && categories[0]) {
+          // this.onChange(this.selectedCat);
+          this.initMap();
+        }
       });
+    //   .subscribe([markers, categories] => {
+    //     this.markers = markers;
+    //     if (markers[0]) {
+    //       this.onChange(this.selectedCat);
+    //       this.initMap();
+    //     }
+    //   });
+    // this.dbService.categories$
+    //   .takeUntil(this.ngUnsubscribe)
+    //   .subscribe(categories => {
+    //     if (this.selectedCat === null && categories[0]) {
+    //       this.selectedCat = categories[0];
+    //     }
+    //     this.categories = categories;
+    //   });
   }
 
   initMap(): void {
@@ -77,17 +88,22 @@ export class MapComponent implements OnDestroy, OnInit {
       zoom: this.zoom,
       center: this.coords
     });
-    const markers = this.filteredMarkers.map((marker) => this.setMarker(marker));
-    this.automplete = new google.maps.places.Autocomplete(this.searchTextFieldElement.nativeElement);
-    this.automplete.addListener('place_changed', () => this.setNewCoords());
+    // this.infoWindow = new google.maps.InfoWindow();
+    // this.autocompleteMarker = new google.maps.Marker({
+    //   map: this.map,
+    //   anchorPoint: new google.maps.Point(0, -29)
+    // });
+    // const markers = this.filteredMarkers.map((marker) => this.setMarker(marker));
+    this.autocomplete = new google.maps.places.Autocomplete(this.searchTextFieldElement.nativeElement);
+    // this.autocomplete.addListener('place_changed', () => this.setNewCoords());
     this.map.addListener('click', this.onClickMap.bind(this));
-    this.map.addListener('rightclick', this.onRightClick.bind(this));
-    this.map.addListener('zoom_changed', () => this.zoom = this.map.getZoom());
-    this.map.addListener('center_changed', () => this.coords = this.map.getCenter());
-    markers.forEach((marker) => marker.addListener('click', () => {
-      this.hideAllInfoWindows(markers);
-      marker.infowindow.open(this.map, marker);
-    }));
+    // this.map.addListener('rightclick', this.onRightClick.bind(this));
+    // this.map.addListener('zoom_changed', () => this.zoom = this.map.getZoom());
+    // this.map.addListener('center_changed', () => this.coords = this.map.getCenter());
+    // markers.forEach((marker) => marker.addListener('click', () => {
+    //   this.hideAllInfoWindows(markers);
+    //   marker.infowindow.open(this.map, marker);
+    // }));
   }
 
   private setMarker(marker) {
@@ -145,15 +161,49 @@ export class MapComponent implements OnDestroy, OnInit {
   }
 
   private setNewCoords(): void {
-    this.coords = this.automplete.getPlace().geometry.location;
-    this.zoom = 12;
-    this.map.setCenter(this.coords);
-    this.map.setZoom(this.zoom);
+    this.infoWindow.close();
+    this.autocompleteMarker.setVisible(false);
+    const place = this.autocomplete.getPlace();
+    if (!place || !place.geometry) {
+      // User entered the name of a Place that was not suggested and
+      // pressed the Enter key, or the Place Details request failed.
+      console.log(place);
+      window.alert("No details available for input: '" + this.searchTextFieldElement.nativeElement);
+      console.log('No details available for input:');
+      return;
+    }
+
+    // If the place has a geometry, then present it on a map.
+    if (place.geometry.viewport) {
+      this.map.fitBounds(place.geometry.viewport);
+    } else {
+      this.map.setCenter(place.geometry.location);
+      this.map.setZoom(17);  // Why 17? Because it looks good.
+    }
+    this.autocompleteMarker.setIcon(/** @type {google.maps.Icon} */({
+      url: place.icon,
+      size: new google.maps.Size(71, 71),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(17, 34),
+      scaledSize: new google.maps.Size(35, 35)
+    }));
+    this.autocompleteMarker.setPosition(place.geometry.location);
+    this.autocompleteMarker.setVisible(true);
+    let address = '';
+    if (place.address_components) {
+      address = [
+        (place.address_components[0] && place.address_components[0].short_name || ''),
+        (place.address_components[1] && place.address_components[1].short_name || ''),
+        (place.address_components[2] && place.address_components[2].short_name || '')
+      ].join(' ');
+    }
+    this.infoWindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+    this.infoWindow.open(this.map, this.autocompleteMarker);
   }
 
   private onClickMap(e): void {
     this.mapService.place.next(e);
-
+    console.log(e);
     if (e.placeId) {
       const googleService = new google.maps.places.PlacesService(this.map);
       const placeId = {
