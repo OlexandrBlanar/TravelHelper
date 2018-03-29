@@ -43,6 +43,7 @@ export class MapComponent implements OnDestroy, OnInit {
   ) { }
 
   ngOnInit() {
+    let isChangeZoom = true;
     this.dbService.userUid$
       .takeUntil(this.ngUnsubscribe)
       .subscribe(data => this.userUid = data);
@@ -62,48 +63,38 @@ export class MapComponent implements OnDestroy, OnInit {
         }
         this.markers = markers;
         if (markers[0] && categories[0]) {
-          // this.onChange(this.selectedCat);
-          this.initMap();
+          this.onChange(this.selectedCat, isChangeZoom);
+          isChangeZoom = false;
         }
       });
-    //   .subscribe([markers, categories] => {
-    //     this.markers = markers;
-    //     if (markers[0]) {
-    //       this.onChange(this.selectedCat);
-    //       this.initMap();
-    //     }
-    //   });
-    // this.dbService.categories$
-    //   .takeUntil(this.ngUnsubscribe)
-    //   .subscribe(categories => {
-    //     if (this.selectedCat === null && categories[0]) {
-    //       this.selectedCat = categories[0];
-    //     }
-    //     this.categories = categories;
-    //   });
   }
 
-  initMap(): void {
+  initMap(isChangeZoom: Boolean): void {
     this.map = new google.maps.Map(this.mapElement.nativeElement, {
       zoom: this.zoom,
       center: this.coords
     });
-    // this.infoWindow = new google.maps.InfoWindow();
-    // this.autocompleteMarker = new google.maps.Marker({
-    //   map: this.map,
-    //   anchorPoint: new google.maps.Point(0, -29)
-    // });
-    // const markers = this.filteredMarkers.map((marker) => this.setMarker(marker));
+    const markersBounds = new google.maps.LatLngBounds();
+    this.infoWindow = new google.maps.InfoWindow();
+    this.autocompleteMarker = new google.maps.Marker({
+      map: this.map,
+      anchorPoint: new google.maps.Point(0, -29)
+    });
+    const markers = this.filteredMarkers.map((marker) => this.setMarker(marker));
+    markers.forEach(marker => markersBounds.extend(marker.position));
     this.autocomplete = new google.maps.places.Autocomplete(this.searchTextFieldElement.nativeElement);
-    // this.autocomplete.addListener('place_changed', () => this.setNewCoords());
+    this.autocomplete.addListener('place_changed', () => this.setNewCoords());
     this.map.addListener('click', this.onClickMap.bind(this));
-    // this.map.addListener('rightclick', this.onRightClick.bind(this));
-    // this.map.addListener('zoom_changed', () => this.zoom = this.map.getZoom());
-    // this.map.addListener('center_changed', () => this.coords = this.map.getCenter());
-    // markers.forEach((marker) => marker.addListener('click', () => {
-    //   this.hideAllInfoWindows(markers);
-    //   marker.infowindow.open(this.map, marker);
-    // }));
+    this.map.addListener('rightclick', this.onRightClick.bind(this));
+    this.map.addListener('zoom_changed', () => this.zoom = this.map.getZoom());
+    this.map.addListener('center_changed', () => this.coords = this.map.getCenter());
+    markers.forEach((marker) => marker.addListener('click', () => {
+      this.hideAllInfoWindows(markers);
+      marker.infowindow.open(this.map, marker);
+    }));
+    if (isChangeZoom) {
+      this.map.setCenter(markersBounds.getCenter(), this.map.fitBounds(markersBounds));
+    }
   }
 
   private setMarker(marker) {
@@ -168,7 +159,7 @@ export class MapComponent implements OnDestroy, OnInit {
       // User entered the name of a Place that was not suggested and
       // pressed the Enter key, or the Place Details request failed.
       console.log(place);
-      window.alert("No details available for input: '" + this.searchTextFieldElement.nativeElement);
+      // window.alert("No details available for input: '" + this.searchTextFieldElement.nativeElement);
       console.log('No details available for input:');
       return;
     }
@@ -238,9 +229,10 @@ export class MapComponent implements OnDestroy, OnInit {
     });
   }
 
-  onChange(selectedCat: string): void {
+  onChange(selectedCat: string, isChangeZoom = true): void {
     this.filteredMarkers = (this.markers as any).filter(marker => marker.category === selectedCat);
-    this.initMap();
+    this.initMap(isChangeZoom);
+    console.log(isChangeZoom);
   }
 
   ngOnDestroy() {
