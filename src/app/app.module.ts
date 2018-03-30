@@ -18,6 +18,7 @@ import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { MapService } from './map/map.service';
 import { DbService } from '@core/services/db.service';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { DbService } from '@core/services/db.service';
     HttpClientJsonpModule,
     AuthModule,
     CoreModule,
-    SharedModule
+    SharedModule,
+    NgbModule.forRoot()
   ],
   providers: [
     AuthService,
