@@ -12,7 +12,8 @@
         </div>
       </ng-template>
       <ng-template ngbSlide>
-        <img [src]="placeInfo.photos[1]" alt="Random second slide">
+        <img [src]="placeInfo.photos[1].getUrl({maxWidht:640, maxHeight:640})" alt="Random second slide">
+        <a href="https://maps.google.com/maps/contrib/115292376925652979053/photos">Zoltan Marius Bursan</a>
         <div class="carousel-caption">
           <h3>Second slide label</h3>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>

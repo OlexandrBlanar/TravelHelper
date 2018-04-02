@@ -50,8 +50,10 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
       .takeUntil(this.ngUnsubscribe)
       .subscribe(placeInfo => {
         this.placeInfo = placeInfo;
+        // if(this.placeInfo) console.log((placeInfo as any).photos[1].getUrl());
         if (this.placeInfo.name) {
           this.infoPlaceService.getWikiInfo(this.placeInfo.name);
+          if(this.placeInfo) console.log((placeInfo as any).photos[1].getUrl({maxWidth: 640}));
         }
       });
   }
