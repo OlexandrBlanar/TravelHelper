@@ -4,26 +4,11 @@
 			{{placeInfo.name}}
 		</h2>
     <ngb-carousel *ngIf="placeInfo.photos">
-      <ng-template ngbSlide>
-        <img [src]="placeInfo.photos[0]" alt="Random first slide">
+      <ng-template *ngFor="let photo of placeInfo.photos" ngbSlide>
+        <img [src]="photo.getUrl({maxwidth:250,maxHeight:250})" alt="Random first slide">
         <div class="carousel-caption">
           <h3>First slide label</h3>
           <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-        </div>
-      </ng-template>
-      <ng-template ngbSlide>
-        <img [src]="placeInfo.photos[1].getUrl({maxWidht:640, maxHeight:640})" alt="Random second slide">
-        <a href="https://maps.google.com/maps/contrib/115292376925652979053/photos">Zoltan Marius Bursan</a>
-        <div class="carousel-caption">
-          <h3>Second slide label</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-      </ng-template>
-      <ng-template ngbSlide>
-        <img [src]="placeInfo.photos[2]" alt="Random third slide">
-        <div class="carousel-caption">
-          <h3>Third slide label</h3>
-          <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
         </div>
       </ng-template>
     </ngb-carousel>
