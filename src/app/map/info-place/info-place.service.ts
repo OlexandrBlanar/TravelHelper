@@ -14,7 +14,7 @@ export class InfoPlaceService {
     this.http.jsonp(url, 'callback')
       .map(response => (response as any).query.pages)
       // .map((results: any[]) => results.map((result) => console.log(result)))
-      .subscribe(results => console.log(results.extract));
+      .subscribe(result => console.log(result[Object.keys(result)[0]]));
 
   }
 
