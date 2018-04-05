@@ -8,6 +8,10 @@ $color-accent: #16a085;
   flex-grow: 2;
 }
 
+.info-place {
+  flex-grow: 1;
+}
+
 input {
   border: 1px solid #ccc;
   font-size: 14px;
@@ -16,6 +20,7 @@ input {
   width: 50%;
   border-radius: 6px;
   margin-bottom: 15px;
+  margin-right: 35px;
   &:focus {
     outline: none;
   }
@@ -37,7 +42,6 @@ input {
 
 select {
   margin-bottom: 15px;
-  margin-left: 35px;
   background: transparent;
   border: none;
   border-radius: 6px;

@@ -11,7 +11,7 @@ import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'th-info-place',
   templateUrl: './info-place.component.html',
-  styleUrls: ['./info-place.component.scss', './bootstrap.min.css']
+  styleUrls: ['./info-place.component.scss']
 })
 export class InfoPlaceComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
@@ -19,6 +19,7 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
   markerName: string;
   comments: string = '';
   placeInfo: any;
+  wikiInfo: string;
   categories: string[];
   newCategory: string;
   selectedCat: string;
@@ -50,10 +51,9 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
       .takeUntil(this.ngUnsubscribe)
       .subscribe(placeInfo => {
         this.placeInfo = placeInfo;
-        // if(this.placeInfo) console.log((placeInfo as any).photos[1].getUrl());
         if (this.placeInfo.name) {
-          this.infoPlaceService.getWikiInfo(this.placeInfo.name);
-          if (this.placeInfo) console.log((placeInfo as any).photos[1].getUrl({maxWidth: 640}));
+          this.infoPlaceService.getWikiInfo(this.placeInfo.name)
+            .subscribe(data => this.wikiInfo = data.extract);
         }
       });
   }

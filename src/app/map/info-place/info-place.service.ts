@@ -10,11 +10,10 @@ export class InfoPlaceService {
 
   getWikiInfo(placeName: string) {
     const url = this.searchUrl(placeName, wikiUrl);
-    console.log(url);
-    this.http.jsonp(url, 'callback')
+    return this.http.jsonp(url, 'callback')
       .map(response => (response as any).query.pages)
       // .map((results: any[]) => results.map((result) => console.log(result)))
-      .subscribe(result => console.log(result[Object.keys(result)[0]]));
+      .map(result => result[Object.keys(result)[0]]);
 
   }
 
@@ -27,7 +26,7 @@ export class InfoPlaceService {
       .append('gsrnamespace', '0')
       .append('gsrlimit', '1')
       .append('prop', 'extracts')
-      .append('exchars', '200')
+      .append('exchars', '300')
       .append('exlimit', 'max')
       .append('explaintext', 'true')
       .append('exintro', 'true');

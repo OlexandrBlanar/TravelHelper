@@ -7,19 +7,18 @@
       <ng-template *ngFor="let photo of placeInfo.photos" ngbSlide>
         <img [src]="photo.getUrl({maxwidth:250,maxHeight:250})" alt="Random first slide">
         <div class="carousel-caption">
-          <h3>First slide label</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          <h3></h3>
+          <p></p>
         </div>
       </ng-template>
     </ngb-carousel>
-		<!-- <div class="foto-place">
-			{{placeInfo.photos[0]}}
-		</div> -->
 		<div class="other-info">
-			<div *ngIf="placeInfo.rating" class="raiting">Рейтинг: {{placeInfo.rating}}</div>
+      <ngb-rating [(rate)]="placeInfo.rating" max="5"></ngb-rating>
+      <hr>
+      <pre>Rate: <b>{{placeInfo.rating}}</b></pre>
 			<div *ngIf="placeInfo.website" class="site">Сайт: <a href=placeInfo.website>{{placeInfo.website}}</a></div>
 		</div>
-		<div class="wiki-info"></div>
+		<div class="wiki-info" *ngIf="wikiInfo">{{wikiInfo}}}</div>
 		<div *ngIf="placeInfo.formatted_address" class="address">Адреса: {{placeInfo.formatted_address}}</div>
 		<div *ngIf="placeInfo.formatted_phone_number" class="phone-number">Телефон: {{placeInfo.formatted_phone_number}}</div>
 		<div *ngIf="placeInfo.opening_hours" class="opening_hours">
