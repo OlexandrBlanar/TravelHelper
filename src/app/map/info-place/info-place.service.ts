@@ -12,7 +12,6 @@ export class InfoPlaceService {
     const url = this.searchUrl(placeName, wikiUrl);
     return this.http.jsonp(url, 'callback')
       .map(response => (response as any).query.pages)
-      // .map((results: any[]) => results.map((result) => console.log(result)))
       .map(result => result[Object.keys(result)[0]]);
 
   }

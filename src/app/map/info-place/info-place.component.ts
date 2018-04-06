@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MapService } from '../map.service';
 import { AuthService } from '@auth/auth.service';
 
-import { wikiUrl } from '../constants/constants';
 import { InfoPlaceService } from './info-place.service';
 import { DbService } from '@core/services/db.service';
 import 'rxjs/add/operator/takeUntil';
+import { mergeMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -17,7 +17,7 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   private userUid: string;
   markerName: string;
-  comments: string = '';
+  comments = '';
   placeInfo: any;
   wikiInfo: string;
   categories: string[];
@@ -30,9 +30,7 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
     private dbService: DbService,
     private authService: AuthService,
     private infoPlaceService: InfoPlaceService
-  ) {
-    this.placeInfo = '';
-  }
+  ) {  }
 
   ngOnInit() {
     this.dbService.userUid$
@@ -49,11 +47,20 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
 
     this.mapService.placeInfo
       .takeUntil(this.ngUnsubscribe)
+      // .pipe(mergeMap(placeInfo => {
+      //   this.placeInfo = placeInfo;
+      //     if (this.placeInfo.name) {
+      //      return this.infoPlaceService.getWikiInfo(this.placeInfo.name);
+      //     }
+      // }))
+      // .subscribe(data => this.wikiInfo = data.extract);
       .subscribe(placeInfo => {
         this.placeInfo = placeInfo;
         if (this.placeInfo.name) {
           this.infoPlaceService.getWikiInfo(this.placeInfo.name)
-            .subscribe(data => this.wikiInfo = data.extract);
+            .subscribe(data => {
+              console.log(data);
+              this.wikiInfo = data.extract});
         }
       });
   }

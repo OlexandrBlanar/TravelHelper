@@ -4,6 +4,18 @@ $color-accent: #16a085;
   padding-left: 15px;
 }
 
+.other-info hr {
+  margin: 0;
+}
+
+.other-info pre {
+  margin: 0;
+}
+
+.other-info ngb-rating {
+  margin-top: 10px;
+}
+
 select {
   margin-bottom: 30px;
   background: transparent;

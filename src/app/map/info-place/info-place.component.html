@@ -18,7 +18,7 @@
       <pre>Rate: <b>{{placeInfo.rating}}</b></pre>
 			<div *ngIf="placeInfo.website" class="site">Сайт: <a href=placeInfo.website>{{placeInfo.website}}</a></div>
 		</div>
-		<div class="wiki-info" *ngIf="wikiInfo">{{wikiInfo}}}</div>
+		<div class="wiki-info" *ngIf="wikiInfo">{{wikiInfo}}</div>
 		<div *ngIf="placeInfo.formatted_address" class="address">Адреса: {{placeInfo.formatted_address}}</div>
 		<div *ngIf="placeInfo.formatted_phone_number" class="phone-number">Телефон: {{placeInfo.formatted_phone_number}}</div>
 		<div *ngIf="placeInfo.opening_hours" class="opening_hours">
