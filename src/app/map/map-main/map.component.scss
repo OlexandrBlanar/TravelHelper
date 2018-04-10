@@ -5,11 +5,12 @@ $color-accent: #16a085;
 }
 
 .mapCover {
+  flex-basis: 60%;
   flex-grow: 2;
 }
 
 .info-place {
-  flex-grow: 1;
+  flex-basis: 40%;
 }
 
 input {

@@ -20,6 +20,7 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
   comments = '';
   placeInfo: any;
   wikiInfo: string;
+  wikiPageUrl: string;
   categories: string[];
   newCategory: string;
   selectedCat: string;
@@ -56,11 +57,15 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
       // .subscribe(data => this.wikiInfo = data.extract);
       .subscribe(placeInfo => {
         this.placeInfo = placeInfo;
+        console.log(this.placeInfo);
         if (this.placeInfo.name) {
-          this.infoPlaceService.getWikiInfo(this.placeInfo.name)
-            .subscribe(data => {
+          this.infoPlaceService.getWikiInfo(`${this.placeInfo.name} +${this.placeInfo.address_components[2].long_name} +${this.placeInfo.address_components[1].long_name}`)
+            .switchMap(data => {
               console.log(data);
-              this.wikiInfo = data.extract});
+              this.wikiInfo = data.extract;
+              return this.infoPlaceService.getWikiPageUrl((data as any).pageid);
+            })
+            .subscribe(url => console.log(url.canonicalurl));
         }
       });
   }
