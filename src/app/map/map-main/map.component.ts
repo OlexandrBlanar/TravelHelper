@@ -146,7 +146,7 @@ export class MapComponent implements OnDestroy, OnInit {
   private onRightClick(e) {
     this.isMenu = true;
     this.coordsMenu = {
-      top: e.Fa.clientY + 60 + 'px',
+      top: e.Fa.clientY + 30 + 'px',
       left: e.Fa.clientX + 'px'
     };
   }

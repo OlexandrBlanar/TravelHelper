@@ -14,16 +14,12 @@ export class InfoPlaceService {
     return this.http.jsonp(url, 'callback')
       .map(response => {
         if (!(response as any).query) {
-          response.query.pages = '';
-          return response.query.pages;
-        }
+          (response as any).query.pages = 'None';
+        return (response as any).query.pages;
+      }
         return (response as any).query.pages;
       })
       .map(result => result[Object.keys(result)[0]]);
-      // .switchMap(wikiInfo => {
-      //   return this.getWikiPageUrl((wikiInfo as any).pageId, wikiUrl);
-      // });
-
   }
 
   searchUrl(term: string): string {

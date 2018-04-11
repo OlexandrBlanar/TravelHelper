@@ -5,7 +5,6 @@ import { AuthService } from '@auth/auth.service';
 import { InfoPlaceService } from './info-place.service';
 import { DbService } from '@core/services/db.service';
 import 'rxjs/add/operator/takeUntil';
-import { mergeMap } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -48,18 +47,11 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
 
     this.mapService.placeInfo
       .takeUntil(this.ngUnsubscribe)
-      // .pipe(mergeMap(placeInfo => {
-      //   this.placeInfo = placeInfo;
-      //     if (this.placeInfo.name) {
-      //      return this.infoPlaceService.getWikiInfo(this.placeInfo.name);
-      //     }
-      // }))
-      // .subscribe(data => this.wikiInfo = data.extract);
       .subscribe(placeInfo => {
         this.placeInfo = placeInfo;
         console.log(this.placeInfo);
         if (this.placeInfo.name) {
-          this.infoPlaceService.getWikiInfo(`${this.placeInfo.name} +${this.placeInfo.address_components[2].long_name} +${this.placeInfo.address_components[1].long_name}`)
+          this.infoPlaceService.getWikiInfo(`${this.placeInfo.name} +${this.placeInfo.address_components[2].long_name}`)
             .switchMap(data => {
               console.log(data);
               this.wikiInfo = data.extract;
