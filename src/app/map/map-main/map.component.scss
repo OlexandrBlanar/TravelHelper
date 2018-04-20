@@ -2,14 +2,14 @@ $color-accent: #16a085;
 
 .map-outlet {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .mapCover {
-  flex-basis: 60%;
-  flex-grow: 2;
+  flex-grow: 1;
 }
 
-.info-place {
+.infoPlace {
   flex-basis: 40%;
 }
 

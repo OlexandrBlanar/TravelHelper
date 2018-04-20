@@ -23,6 +23,7 @@ export class MapComponent implements OnDestroy, OnInit {
   @ViewChild('searchTextField') searchTextFieldElement: ElementRef;
 
   isMenu = false;
+  infoPlaceIsOpen = false;
   coordsMenu: Object;
   categories: string[];
   selectedCat: string = null;
@@ -145,9 +146,10 @@ export class MapComponent implements OnDestroy, OnInit {
 
   private onRightClick(e) {
     this.isMenu = true;
+    console.log(e.Ia.clientY);
     this.coordsMenu = {
-      top: e.Fa.clientY + 30 + 'px',
-      left: e.Fa.clientX + 'px'
+      top: e.Ia.clientY + 30 + 'px',
+      left: e.Ia.clientX + 'px'
     };
   }
 
@@ -194,6 +196,7 @@ export class MapComponent implements OnDestroy, OnInit {
 
   private onClickMap(e): void {
     this.mapService.place.next(e);
+    this.infoPlaceIsOpen = true;
     console.log(e);
     if (e.placeId) {
       const googleService = new google.maps.places.PlacesService(this.map);
@@ -206,6 +209,7 @@ export class MapComponent implements OnDestroy, OnInit {
         }
       });
     } else {
+      this.infoPlaceIsOpen = false;
       this.mapService.placeInfo.next(e);
     }
   }
