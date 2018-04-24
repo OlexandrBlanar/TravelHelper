@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DbService } from '@core/services/db.service';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'th-category',
@@ -24,26 +25,36 @@ export class CategoryComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.dbService.userUid$
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(userUid => this.userUid = userUid);
+      .catch(error => Observable.of(error))
+      .subscribe(
+        userUid => this.userUid = userUid,
+        error => console.log(error)
+      );
     this.dbService.categories$
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(categories => {
-        if (this.selectedCat === (null || undefined) && categories[0]) {
-          this.selectedCat = categories[0];
-          console.log(this.selectedCat);
-        }
-        if (this.deleteCat === this.selectedCat) {
-          this.selectedCat = categories[0];
-        }
-        this.categories = categories;
-      });
+      .catch(error => Observable.of(error))
+      .subscribe(
+        categories => {
+          if (this.selectedCat === (null || undefined) && categories[0]) {
+            this.selectedCat = categories[0];
+          }
+          if (this.deleteCat === this.selectedCat) {
+            this.selectedCat = categories[0];
+          }
+          this.categories = categories;
+        },
+        error => console.log(error)
+      );
     this.dbService.markers$
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(markers => {
-        console.log(markers);
-        this.markers = markers;
-        this.onChange(this.selectedCat);
-      });
+      .catch(error => Observable.of(error))
+      .subscribe(
+        markers => {
+          this.markers = markers;
+          this.onChange(this.selectedCat);
+        },
+        error => console.log(error)
+      );
   }
 
   onAddCategory(): void {
@@ -59,12 +70,10 @@ export class CategoryComponent implements OnInit, OnDestroy {
     });
     this.dbService.deleteCategory(this.userUid, this.selectedCat, this.categories);
     this.deleteCat = this.selectedCat;
-    console.log(this.selectedCat);
   }
 
   onChange(selectedCat: string): void {
     this.filteredMarkers = (this.markers as any).filter(marker => marker.category === selectedCat);
-    console.log(this.selectedCat);
   }
 
   deleteMarker(marker: string): void {

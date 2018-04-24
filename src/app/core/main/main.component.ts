@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { DbService } from '../services/db.service';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'th-main',
@@ -19,22 +20,18 @@ export class MainComponent implements OnInit, OnDestroy {
       if (user) {
         this.dbService.userUid$.next(user.uid);
         this.subCategories = this.dbService.getCategories(user.uid)
-          .subscribe(data => {
-              this.dbService.categories$.next(data.categories);
-              // if (Object.keys(data).length !== 0) {
-              //   this.dbService.categories$.next(data.categories);
-              // }
+          .catch(error => Observable.of(error))
+          .subscribe(
+            data => {
+            this.dbService.categories$.next(data.categories);
             },
             err => {
               console.error('Oops:', err.message);
             });
         this.subMarkers = this.dbService.getMarkers(user.uid)
-          .subscribe(data => {
+          .subscribe(
+            data => {
               this.dbService.markers$.next(data);
-              // if (data.length !== 0) {
-              //   this.dbService.markers$.next(data);
-              // }
-              console.log(data);
             },
             err => {
               console.error('Oops:', err.message);

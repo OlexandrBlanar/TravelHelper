@@ -24,7 +24,6 @@ export class DbService {
   }
 
   getMarkers(userUid: string): Observable<any> {
-    console.log(userUid);
     return (this.afs as any).collection('users').doc(userUid).collection('markers')
       .valueChanges();
   }
@@ -42,7 +41,6 @@ export class DbService {
   }
 
   deleteMarker(userUid: string, marker: string): void {
-    console.log(marker);
     (this.afs as any).collection('users').doc(userUid).collection('markers').doc(marker)
       .delete()
       .then(() => console.log('Marker successfully deleted'))
@@ -50,7 +48,6 @@ export class DbService {
   }
 
   addCategory(userUid: string, newCategory: string, categories: string[]): void {
-    console.log(newCategory);
     const newCategories = {
       categories: [newCategory, ...categories]
     };
@@ -62,8 +59,6 @@ export class DbService {
     const newCategories = {
       categories: categories.filter(category => category !== deleteCategory)
     };
-    console.log(deleteCategory);
-    console.log(newCategories);
     this.afs.collection('users').doc(userUid)
       .set(newCategories);
   }

@@ -47,7 +47,11 @@ export class MapComponent implements OnDestroy, OnInit {
     let isChangeZoom = true;
     this.dbService.userUid$
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(data => this.userUid = data);
+      .catch(error => Observable.of(error))
+      .subscribe(
+        data => this.userUid = data,
+        error => console.log(error)
+        );
     Observable.fromPromise(this.setCurrentPosition())
       .catch(error => {
           console.log(error);
@@ -57,17 +61,22 @@ export class MapComponent implements OnDestroy, OnInit {
         return combineLatest(this.dbService.markers$, this.dbService.categories$);
       })
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(([markers, categories]) => {
-        this.categories = categories;
-        if (this.selectedCat === null && categories[0]) {
-          this.selectedCat = categories[0];
-        }
-        this.markers = markers;
-        if (markers[0] && categories[0]) {
-          this.onChange(this.selectedCat, isChangeZoom);
-          isChangeZoom = false;
-        }
-      });
+      .catch(error => Observable.of(error))
+      .subscribe(
+        ([markers, categories]) => {
+          this.categories = categories;
+          this.initMap(false);
+          if (this.selectedCat === null && categories[0]) {
+            this.selectedCat = categories[0];
+          }
+          this.markers = markers;
+          if (markers[0] && categories[0]) {
+            this.onChange(this.selectedCat, isChangeZoom);
+            isChangeZoom = false;
+          }
+        },
+        error => console.log(error)
+      );
   }
 
   initMap(isChangeZoom: Boolean): void {
@@ -146,7 +155,6 @@ export class MapComponent implements OnDestroy, OnInit {
 
   private onRightClick(e) {
     this.isMenu = true;
-    console.log(e.Ia.clientY);
     this.coordsMenu = {
       top: e.Ia.clientY + 30 + 'px',
       left: e.Ia.clientX + 'px'
@@ -160,7 +168,6 @@ export class MapComponent implements OnDestroy, OnInit {
     if (!place || !place.geometry) {
       // User entered the name of a Place that was not suggested and
       // pressed the Enter key, or the Place Details request failed.
-      console.log(place);
       // window.alert("No details available for input: '" + this.searchTextFieldElement.nativeElement);
       console.log('No details available for input:');
       return;
@@ -197,7 +204,6 @@ export class MapComponent implements OnDestroy, OnInit {
   private onClickMap(e): void {
     this.mapService.place.next(e);
     this.infoPlaceIsOpen = true;
-    console.log(e);
     if (e.placeId) {
       const googleService = new google.maps.places.PlacesService(this.map);
       const placeId = {
@@ -236,7 +242,6 @@ export class MapComponent implements OnDestroy, OnInit {
   onChange(selectedCat: string, isChangeZoom = true): void {
     this.filteredMarkers = (this.markers as any).filter(marker => marker.category === selectedCat);
     this.initMap(isChangeZoom);
-    console.log(isChangeZoom);
   }
 
   ngOnDestroy() {

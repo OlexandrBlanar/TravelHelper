@@ -22,4 +22,4 @@
   </div>
 </div>
 <input type="text" [(ngModel)]="newCategory" placeholder="Category name">
-<input type="button" value="Add category" (click)="onAddCategory()">
+<input type="button" value="Add category" (click)="onAddCategory()" [disabled]="true">

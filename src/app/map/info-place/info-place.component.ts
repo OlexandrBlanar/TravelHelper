@@ -6,6 +6,7 @@ import { InfoPlaceService } from './info-place.service';
 import { DbService } from '@core/services/db.service';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'th-info-place',
@@ -35,31 +36,45 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.dbService.userUid$
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(userUid => this.userUid = userUid);
+      .catch(error => Observable.of(error))
+      .subscribe(
+        userUid => this.userUid = userUid,
+        error => console.log(error)
+      );
     this.dbService.categories$
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(categories => {
-        if (this.selectedCat === undefined && categories[0]) {
-          this.selectedCat = categories[0];
-        }
-        this.categories = categories;
-      });
+      .catch(error => Observable.of(error))
+      .subscribe(
+        categories => {
+          if (this.selectedCat === undefined && categories[0]) {
+            this.selectedCat = categories[0];
+          }
+          this.categories = categories;
+        },
+        error => console.log(error)
+      );
 
     this.mapService.placeInfo
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(placeInfo => {
-        this.placeInfo = placeInfo;
-        console.log(this.placeInfo);
-        if (this.placeInfo.name) {
-          this.infoPlaceService.getWikiInfo(`${this.placeInfo.name} +${this.placeInfo.address_components[2].long_name}`)
-            .switchMap(data => {
-              console.log(data);
-              this.wikiInfo = data.extract;
-              return this.infoPlaceService.getWikiPageUrl((data as any).pageid);
-            })
-            .subscribe(url => console.log(url.canonicalurl));
-        }
-      });
+      .catch(error => Observable.of(error))
+      .subscribe(
+        placeInfo => {
+          this.placeInfo = placeInfo;
+          if (this.placeInfo.name) {
+            this.infoPlaceService.getWikiInfo(`${this.placeInfo.name} +${this.placeInfo.address_components[2].long_name}`)
+              .switchMap(data => {
+                this.wikiInfo = data.extract;
+                return this.infoPlaceService.getWikiPageUrl((data as any).pageid);
+              })
+              .catch(error => Observable.of(error))
+              .subscribe(
+                url => console.log(url.canonicalurl),
+                error => console.log(error)
+              );
+          }
+        },
+        error => console.log(error)
+      );
   }
 
   onAddMarker(): void {
