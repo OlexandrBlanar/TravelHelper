@@ -32,15 +32,15 @@
 		</div>
 
 	</div>
-	<div id="myModal" class="modal"*ngIf="isModal">
+	<div id="myModal" class="modal" *ngIf="isModal">
 		<div class="modal-content">
 			<button class="close" (click)="closeModal()"><span class="close">&times;</span></button>
 			<p>Виберіть категорію або введіть на зву нової категорії</p>
-			<select name="categories" id="cat" [(ngModel)]="selectedCat">
-				<ng-container *ngIf="categories">
-				<option *ngFor="let category of categories" [value]="category">{{ category }}</option>
-				</ng-container>
-			</select>
+			<!--<select name="categories" id="cat" [(ngModel)]="selectedCat">-->
+				<!--<ng-container *ngIf="categories">-->
+				<!--<option *ngFor="let category of categories" [value]="category">{{ category }}</option>-->
+				<!--</ng-container>-->
+			<!--</select>-->
 			<div class="group">
 				<input type="text" [(ngModel)]="newCategory" required>
 				<span class="highlight"></span>

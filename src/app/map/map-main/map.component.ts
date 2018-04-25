@@ -61,7 +61,7 @@ export class MapComponent implements OnDestroy, OnInit {
         return combineLatest(this.dbService.markers$, this.dbService.categories$);
       })
       .takeUntil(this.ngUnsubscribe)
-      .catch(error => Observable.of(error))
+      // .catch(error => Observable.of(error))
       .subscribe(
         ([markers, categories]) => {
           this.categories = categories;
@@ -90,18 +90,26 @@ export class MapComponent implements OnDestroy, OnInit {
       map: this.map,
       anchorPoint: new google.maps.Point(0, -29)
     });
-    const markers = this.filteredMarkers.map((marker) => this.setMarker(marker));
-    markers.forEach(marker => markersBounds.extend(marker.position));
+    if (this.filteredMarkers) {
+      const markers = this.filteredMarkers.map((marker) => this.setMarker(marker));
+      markers.forEach(marker => {
+        markersBounds.extend(marker.position);
+        marker.addListener('click', () => {
+          this.hideAllInfoWindows(markers);
+          marker.infowindow.open(this.map, marker);
+        });
+      });
+    }
     this.autocomplete = new google.maps.places.Autocomplete(this.searchTextFieldElement.nativeElement);
     this.autocomplete.addListener('place_changed', () => this.setNewCoords());
     this.map.addListener('click', this.onClickMap.bind(this));
     this.map.addListener('rightclick', this.onRightClick.bind(this));
     this.map.addListener('zoom_changed', () => this.zoom = this.map.getZoom());
     this.map.addListener('center_changed', () => this.coords = this.map.getCenter());
-    markers.forEach((marker) => marker.addListener('click', () => {
-      this.hideAllInfoWindows(markers);
-      marker.infowindow.open(this.map, marker);
-    }));
+    // markers.forEach((marker) => marker.addListener('click', () => {
+    //   this.hideAllInfoWindows(markers);
+    //   marker.infowindow.open(this.map, marker);
+    // }));
     if (isChangeZoom) {
       this.map.setCenter(markersBounds.getCenter(), this.map.fitBounds(markersBounds));
     }
@@ -203,6 +211,7 @@ export class MapComponent implements OnDestroy, OnInit {
 
   private onClickMap(e): void {
     this.mapService.place.next(e);
+    console.log('click');
     this.infoPlaceIsOpen = true;
     if (e.placeId) {
       const googleService = new google.maps.places.PlacesService(this.map);

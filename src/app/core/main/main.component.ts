@@ -20,7 +20,6 @@ export class MainComponent implements OnInit, OnDestroy {
       if (user) {
         this.dbService.userUid$.next(user.uid);
         this.subCategories = this.dbService.getCategories(user.uid)
-          .catch(error => Observable.of(error))
           .subscribe(
             data => {
             this.dbService.categories$.next(data.categories);

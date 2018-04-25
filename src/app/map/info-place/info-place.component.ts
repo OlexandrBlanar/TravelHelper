@@ -98,6 +98,7 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
   openModal(): void {
     console.log(this.placeInfo.name);
     this.isModal = true;
+    console.log(this.isModal);
   }
 
   closeModal(): void {

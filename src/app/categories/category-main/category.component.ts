@@ -25,14 +25,13 @@ export class CategoryComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.dbService.userUid$
       .takeUntil(this.ngUnsubscribe)
-      .catch(error => Observable.of(error))
       .subscribe(
         userUid => this.userUid = userUid,
         error => console.log(error)
       );
     this.dbService.categories$
       .takeUntil(this.ngUnsubscribe)
-      .catch(error => Observable.of(error))
+      // .catch(error => Observable.of(error))
       .subscribe(
         categories => {
           if (this.selectedCat === (null || undefined) && categories[0]) {
@@ -47,7 +46,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
       );
     this.dbService.markers$
       .takeUntil(this.ngUnsubscribe)
-      .catch(error => Observable.of(error))
+      // .catch(error => Observable.of(error))
       .subscribe(
         markers => {
           this.markers = markers;
