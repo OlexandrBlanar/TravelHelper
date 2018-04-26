@@ -37,7 +37,8 @@ export class DbService {
         lng: place.latLng.lng()
     };
     this.afs.collection('users').doc(userUid)
-        .collection('markers').doc(place.name).set(newMarker);
+        .collection('markers').doc(place.name).set(newMarker)
+        .catch((err) => console.log(err));;
   }
 
   deleteMarker(userUid: string, marker: string): void {
@@ -52,7 +53,8 @@ export class DbService {
       categories: [newCategory, ...categories]
     };
     this.afs.collection('users').doc(userUid)
-      .set(newCategories);
+      .set(newCategories)
+      .catch((err) => console.log(err));;
   }
 
   deleteCategory(userUid: string, deleteCategory: string, categories: string[]): void {
@@ -60,7 +62,8 @@ export class DbService {
       categories: categories.filter(category => category !== deleteCategory)
     };
     this.afs.collection('users').doc(userUid)
-      .set(newCategories);
+      .set(newCategories)
+      .catch((err) => console.log(err));
   }
 
 }

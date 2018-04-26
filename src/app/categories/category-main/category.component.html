@@ -15,6 +15,8 @@
         {{ marker["name"] }}
         <button type="button" class="btn-picto" (click)="deleteMarker(marker.name)">
           <i class="material-icons">delete</i>
+        </button>
+        <button type="button" class="btn-picto" (click)="openModal(marker)">
           <i class="material-icons">mode_edit</i>
         </button>
       </li>
@@ -22,4 +24,28 @@
   </div>
 </div>
 <input type="text" [(ngModel)]="newCategory" placeholder="Category name">
-<input type="button" value="Add category" (click)="onAddCategory()" [disabled]="!!newCategory">
+<input type="button" value="Add category" (click)="onAddCategory()" [disabled]="!newCategory">
+<div id="myModal" class="modal" *ngIf="isModal">
+  <div class="modal-content">
+    <button class="close" (click)="closeModal()"><span class="close">&times;</span></button>
+    <select name="categories" id="category" [(ngModel)]="selectedCat">
+      <ng-container *ngIf="categories">
+        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+      </ng-container>
+    </select>
+    <!--<div class="group">-->
+      <!--<input type="text" [(ngModel)]="newCategory" required>-->
+      <!--<span class="highlight"></span>-->
+      <!--<span class="bar"></span>-->
+      <!--<label>New category</label>-->
+    <!--</div>-->
+    <div class="group">
+      <input type="text" [(ngModel)]="editMarker.name" required>
+      <span class="highlight"></span>
+      <span class="bar"></span>
+      <label>Marker name</label>
+    </div>
+    <textarea name="comments" [(ngModel)]="editMarker.comments" cols="30" rows="10" placeholder="Add comments"></textarea>
+    <input type="submit" value="Save changes" (click)="saveChanges()">
+  </div>
+</div>

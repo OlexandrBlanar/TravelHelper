@@ -211,7 +211,6 @@ export class MapComponent implements OnDestroy, OnInit {
 
   private onClickMap(e): void {
     this.mapService.place.next(e);
-    console.log('click');
     this.infoPlaceIsOpen = true;
     if (e.placeId) {
       const googleService = new google.maps.places.PlacesService(this.map);

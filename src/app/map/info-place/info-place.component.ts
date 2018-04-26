@@ -68,7 +68,7 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
               })
               .catch(error => Observable.of(error))
               .subscribe(
-                url => console.log(url.canonicalurl),
+                url => this.wikiPageUrl = url.canonicalurl,
                 error => console.log(error)
               );
           }
@@ -80,7 +80,6 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
   onAddMarker(): void {
     this.placeInfo.comments = this.comments;
     if (this.placeInfo.name) {
-      console.log(this.newCategory);
       this.placeInfo.latLng = this.placeInfo.geometry.location;
       this.dbService.addMarker(this.userUid, this.placeInfo, this.newCategory || this.selectedCat);
     } else {
@@ -91,14 +90,11 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
       this.dbService.addCategory(this.userUid, this.newCategory, this.categories);
       this.newCategory = '';
     }
-    console.log(this.comments);
     this.closeModal();
   }
 
   openModal(): void {
-    console.log(this.placeInfo.name);
     this.isModal = true;
-    console.log(this.isModal);
   }
 
   closeModal(): void {

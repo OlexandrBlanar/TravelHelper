@@ -16,9 +16,14 @@
       <ngb-rating [(rate)]="placeInfo.rating" max="5"></ngb-rating>
       <hr>
       <pre>Rate: <b>{{placeInfo.rating}}</b></pre>
-			<div *ngIf="placeInfo.website" class="site">Сайт: <a href=placeInfo.website>{{placeInfo.website}}</a></div>
+			<div *ngIf="placeInfo.website" class="site">
+        Сайт: <a [href]="placeInfo.website" target="_blank">{{placeInfo.website}}</a>
+      </div>
 		</div>
-		<div class="wiki-info" *ngIf="wikiInfo">{{wikiInfo}}</div>
+		<div class="wiki-info" *ngIf="wikiInfo">
+      {{wikiInfo}}
+      <a [href]="wikiPageUrl" target="_blank">детальніше</a>
+    </div>
 		<div *ngIf="placeInfo.formatted_address" class="address">Адреса: {{placeInfo.formatted_address}}</div>
 		<div *ngIf="placeInfo.formatted_phone_number" class="phone-number">Телефон: {{placeInfo.formatted_phone_number}}</div>
 		<div *ngIf="placeInfo.opening_hours" class="opening_hours">
@@ -36,11 +41,11 @@
 		<div class="modal-content">
 			<button class="close" (click)="closeModal()"><span class="close">&times;</span></button>
 			<p>Виберіть категорію або введіть на зву нової категорії</p>
-			<!--<select name="categories" id="cat" [(ngModel)]="selectedCat">-->
-				<!--<ng-container *ngIf="categories">-->
-				<!--<option *ngFor="let category of categories" [value]="category">{{ category }}</option>-->
-				<!--</ng-container>-->
-			<!--</select>-->
+			<select name="categories" id="cat" [(ngModel)]="selectedCat">
+				<ng-container *ngIf="categories">
+				<option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+				</ng-container>
+			</select>
 			<div class="group">
 				<input type="text" [(ngModel)]="newCategory" required>
 				<span class="highlight"></span>
