@@ -28,7 +28,7 @@
 <div id="myModal" class="modal" *ngIf="isModal">
   <div class="modal-content">
     <button class="close" (click)="closeModal()"><span class="close">&times;</span></button>
-    <select name="categories" id="category" [(ngModel)]="selectedCat">
+    <select name="categories" id="category" [(ngModel)]="selectedModalCat">
       <ng-container *ngIf="categories">
         <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
       </ng-container>
@@ -45,7 +45,7 @@
       <span class="bar"></span>
       <label>Marker name</label>
     </div>
-    <textarea name="comments" [(ngModel)]="editMarker.comments" cols="30" rows="10" placeholder="Add comments"></textarea>
+    <textarea name="comments" [(ngModel)]="editMarker.comments" cols="30" rows="7" placeholder="Add comments"></textarea>
     <input type="submit" value="Save changes" (click)="saveChanges()">
   </div>
 </div>

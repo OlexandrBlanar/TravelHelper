@@ -33,8 +33,8 @@ export class DbService {
         name: place.name,
         category: category,
         comments: place.comments,
-        lat: place.latLng.lat(),
-        lng: place.latLng.lng()
+        lat: place.lat || place.latLng.lat(),
+        lng: place.lng || place.latLng.lng()
     };
     this.afs.collection('users').doc(userUid)
         .collection('markers').doc(place.name).set(newMarker)

@@ -41,9 +41,11 @@ export class CategoryComponent implements OnInit, OnDestroy {
         categories => {
           if (this.selectedCat === (null || undefined) && categories[0]) {
             this.selectedCat = categories[0];
+            this.selectedModalCat = categories[0];
           }
           if (this.deleteCat === this.selectedCat) {
             this.selectedCat = categories[0];
+            this.selectedModalCat = categories[0];
           }
           this.categories = categories;
         },
@@ -80,8 +82,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.filteredMarkers = (this.markers as any).filter(marker => marker.category === selectedCat);
   }
 
-  saveChanges(marker: string): void {
-    this.dbService.deleteMarker(this.userUid, marker);
+  saveChanges(): void {
+    this.dbService.deleteMarker(this.userUid, this.editMarker.name);
     this.dbService.addMarker(this.userUid, this.editMarker, this.selectedModalCat);
   }
 
