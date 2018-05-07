@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 
-// import { fadeStateTrigger } from './../../shared/animations/fade.animation';
+import { fadeStateTrigger } from './../../shared/animations/fade.animation';
 import {Message} from '../models/message';
 import {Observable} from 'rxjs/Observable';
 import {AuthService} from './../auth.service';
@@ -12,7 +12,7 @@ import * as firebase from 'firebase/app';
   selector: 'th-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-//   animations: [fadeStateTrigger],
+  animations: [fadeStateTrigger],
 })
 
 export class LoginComponent implements OnInit {

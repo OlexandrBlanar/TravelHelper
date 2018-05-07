@@ -7,6 +7,7 @@ import { InfoPlaceComponent } from './info-place/info-place.component';
 import { InfoPlaceService } from './info-place/info-place.service';
 import { MapRouter } from './map.routing';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { MapModalComponent } from './map-modal/map-modal.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   ],
   declarations: [
     MapComponent,
-    InfoPlaceComponent
+    InfoPlaceComponent,
+    MapModalComponent
   ],
   providers: [InfoPlaceService]
 })

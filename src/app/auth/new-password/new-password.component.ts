@@ -23,20 +23,21 @@ export class NewPasswordComponent implements OnInit {
 
   buildForm(): void {
     this.form = new FormGroup({
-          'email': new FormControl(null, [Validators.required, Validators.email]),
+      'email': new FormControl(null, [Validators.required, Validators.email]),
     });
   }
 
   resetPassword(): void {
     const email = this.form.get('email');
-    this.authService.reset(email.value).then(() => {
-      console.log('Success');
-    }).catch((error) => {
-      this.authService.showMessage.call(this, {
-        text: error,
-        type: 'danger',
-    });
-    });
+    this.authService.reset(email.value)
+      .then(() => {
+        console.log('Success');
+      })
+      .catch((error) => {
+        this.authService.showMessage.call(this, {
+            text: error,
+            type: 'danger',
+          });
+      });
   }
-
 }

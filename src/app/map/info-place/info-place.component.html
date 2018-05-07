@@ -35,32 +35,6 @@
 				<li *ngFor="let day of placeInfo.opening_hours.weekday_text">{{day}}</li>
 			</ul>
 		</div>
-
 	</div>
-	<div id="myModal" class="modal" *ngIf="isModal">
-		<div class="modal-content">
-			<button class="close" (click)="closeModal()"><span class="close">&times;</span></button>
-			<p>Виберіть категорію або введіть на зву нової категорії</p>
-			<select name="categories" id="cat" [(ngModel)]="selectedCat">
-				<ng-container *ngIf="categories">
-				<option *ngFor="let category of categories" [value]="category">{{ category }}</option>
-				</ng-container>
-			</select>
-			<div class="group">
-				<input type="text" [(ngModel)]="newCategory" required>
-				<span class="highlight"></span>
-				<span class="bar"></span>
-				<label>New category</label>
-			</div>
-      <div class="group" *ngIf="!placeInfo.name">
-        <input type="text" [(ngModel)]="markerName" required>
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>Marker name</label>
-      </div>
-      <textarea name="comments" [(ngModel)]="comments" cols="30" rows="10" placeholder="Add comments"></textarea>
-			<input type="submit" value="Add a marker" (click)="onAddMarker()">
-		</div>
-	</div>
-	<input type="submit" value="Add a marker" (click)="openModal()">
+  <input type="submit" value="Add a marker" (click)="openModal()">
 </div>

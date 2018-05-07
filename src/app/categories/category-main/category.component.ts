@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Router} from '@angular/router';
 
 import { DbService } from '@core/services/db.service';
 import 'rxjs/add/operator/takeUntil';
@@ -12,7 +13,7 @@ import {Observable} from 'rxjs/Observable';
   styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent implements OnInit, OnDestroy {
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private ngUnsubscribe = new Subject<void>();
   private userUid: string;
   categories: string[];
   newCategory: string;
@@ -21,10 +22,9 @@ export class CategoryComponent implements OnInit, OnDestroy {
   selectedModalCat: string = null;
   deleteCat: string = null;
   filteredMarkers: string[];
-  isModal = false;
   editMarker: any;
 
-  constructor(private dbService: DbService) {  }
+  constructor(private dbService: DbService, private router: Router) {  }
 
   ngOnInit() {
     this.dbService.userUid$
@@ -57,6 +57,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
       .subscribe(
         markers => {
           this.markers = markers;
+          this.editMarker = markers[0];
           this.onChange(this.selectedCat);
         },
         error => console.log(error)
@@ -82,22 +83,12 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.filteredMarkers = (this.markers as any).filter(marker => marker.category === selectedCat);
   }
 
-  saveChanges(): void {
-    this.dbService.deleteMarker(this.userUid, this.editMarker.name);
-    this.dbService.addMarker(this.userUid, this.editMarker, this.selectedModalCat);
+  openModal(marker: any): void {
+    this.router.navigate(['/categories/modal', marker.name]);
   }
 
   deleteMarker(marker: string): void {
     this.dbService.deleteMarker(this.userUid, marker);
-  }
-
-  openModal(marker: string): void {
-    this.isModal = true;
-    this.editMarker = marker;
-  }
-
-  closeModal(): void {
-    this.isModal = false;
   }
 
   ngOnDestroy() {
