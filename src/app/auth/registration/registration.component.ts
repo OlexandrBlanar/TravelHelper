@@ -6,12 +6,14 @@ import { AuthService } from './../auth.service';
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
 import { Message } from '../models/message';
+import {fadeStateTrigger} from '@shared/animations/fade.animation';
 
 
 @Component({
   selector: 'th-registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss']
+  styleUrls: ['./registration.component.scss'],
+  animations: [fadeStateTrigger],
 })
 export class RegistrationComponent implements OnInit {
 

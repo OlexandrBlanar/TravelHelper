@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostBinding, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '../auth.service';
 import { Message } from '../models/message';
+import { fadeStateTrigger } from './../../shared/animations/fade.animation';
 
 @Component({
   selector: 'th-new-password',
   templateUrl: './new-password.component.html',
-  styleUrls: ['./new-password.component.scss']
+  styleUrls: ['./new-password.component.scss'],
+  animations: [fadeStateTrigger],
 })
 export class NewPasswordComponent implements OnInit {
+
   email: string;
   message: Message;
   form: FormGroup;

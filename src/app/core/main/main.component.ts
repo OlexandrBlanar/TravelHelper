@@ -1,16 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, HostBinding} from '@angular/core';
 
 import { DbService } from '../services/db.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
+import {fadeStateTrigger} from '@shared/animations/fade.animation';
 
 @Component({
   selector: 'th-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+  styleUrls: ['./main.component.scss'],
+  animations: [fadeStateTrigger],
 })
 export class MainComponent implements OnInit, OnDestroy {
+  @HostBinding('@fade') a = true;
   private subCategories: Subscription;
   private subMarkers: Subscription;
 

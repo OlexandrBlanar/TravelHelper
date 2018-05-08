@@ -1,6 +1,7 @@
 <div
-class="alert alert-{{message.type}}"
-*ngIf="message.text"
+  @fade
+  class="alert alert-{{message.type}}"
+  *ngIf="message.text"
 >
 {{message.text}}
 </div>
