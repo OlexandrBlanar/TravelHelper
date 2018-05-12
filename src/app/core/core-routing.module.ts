@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { MainComponent } from './main/main.component';
 import { AuthGuardService } from '@auth/auth-guard.service';
+import {NotFoundComponent} from '@app/not-found/not-found.component';
 
 const routes: Routes = [
   {path: '', component: MainComponent, children: [
@@ -16,6 +17,10 @@ const routes: Routes = [
       loadChildren: '../map/map.module#MapModule',
       canLoad: [AuthGuardService]
     },
+    {
+      path: '**',
+      component: NotFoundComponent
+    }
   ]}
 ];
 

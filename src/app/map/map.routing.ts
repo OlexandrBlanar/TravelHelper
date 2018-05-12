@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { MapComponent } from './map-main/map.component';
 import {MapModalComponent} from '@app/map/map-modal/map-modal.component';
+import {NotFoundComponent} from '@app/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -12,7 +13,7 @@ const routes: Routes = [
       {
         path: 'modal',
         component: MapModalComponent
-      }
+      },
     ]
   }
 ];
