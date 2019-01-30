@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 
 import { MapService } from '../map.service';
 import { InfoPlaceService } from './info-place.service';
@@ -10,7 +10,8 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'th-info-place',
   templateUrl: './info-place.component.html',
-  styleUrls: ['./info-place.component.scss']
+  styleUrls: ['./info-place.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoPlaceComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
@@ -21,7 +22,8 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
   constructor(
     private mapService: MapService,
     private infoPlaceService: InfoPlaceService,
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {  }
 
   ngOnInit() {
@@ -31,6 +33,7 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
       .subscribe(
         placeInfo => {
           this.placeInfo = placeInfo;
+          this.cd.markForCheck();
           if (this.placeInfo.name) {
             this.infoPlaceService.getWikiInfo(`${this.placeInfo.name} +${this.placeInfo.address_components[2].long_name}`)
               .switchMap(data => {
@@ -39,7 +42,10 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
               })
               .catch(error => Observable.of(error))
               .subscribe(
-                url => this.wikiPageUrl = url.canonicalurl,
+                url => {
+                      this.wikiPageUrl = url.canonicalurl;
+                      this.cd.markForCheck();
+                    },
                 error => console.log(error)
               );
           }
@@ -49,7 +55,7 @@ export class InfoPlaceComponent implements OnInit, OnDestroy {
   }
 
   openModal(): void {
-    this.router.navigate(['/map/modal']);
+    this.router.navigate(['/core/map/modal']);
   }
 
   ngOnDestroy() {

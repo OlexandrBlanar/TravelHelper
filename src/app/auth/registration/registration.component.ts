@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -14,6 +14,7 @@ import {fadeStateTrigger} from '@shared/animations/fade.animation';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
   animations: [fadeStateTrigger],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegistrationComponent implements OnInit {
 
@@ -108,7 +109,7 @@ export class RegistrationComponent implements OnInit {
 
       this.authService.signup(email.value, password.value)
         .then(value => {
-            this.router.navigate(['/login']);
+            this.router.navigate(['/auth/login']);
             console.log('Success!', value);
         })
         .catch(err => {

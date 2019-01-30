@@ -9,19 +9,7 @@
       </select>
       <input type="button" value="Delete category" (click)="onDeleteCategory()">
   </div>
-  <div class="markers">
-    <ul>
-      <li *ngFor="let marker of filteredMarkers">
-        {{ marker["name"] }}
-        <button type="button" class="btn-picto" (click)="deleteMarker(marker.name)">
-          <i class="material-icons">delete</i>
-        </button>
-        <button type="button" class="btn-picto" (click)="openModal(marker)">
-          <i class="material-icons">mode_edit</i>
-        </button>
-      </li>
-    </ul>
-  </div>
+  <th-marker-item [markers]="filteredMarkers" [user]="userUid"></th-marker-item>
 </div>
 <input type="text" [(ngModel)]="newCategory" placeholder="Category name">
 <input type="button" value="Add category" (click)="onAddCategory()" [disabled]="!newCategory">

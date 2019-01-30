@@ -13,7 +13,7 @@ export class AuthGuardService implements CanLoad {
   canLoad(): Observable<boolean> | boolean {
     return this.authService.user.take(1).map((user) => {
       if (!user) {
-        this.router.navigate(['login']);
+        this.router.navigate(['/auth/login']);
 
         return false;
       } else {

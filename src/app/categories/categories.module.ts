@@ -5,6 +5,7 @@ import {CategoryRouter} from '@app/categories/category.routing';
 
 import { CategoryComponent } from './category-main/category.component';
 import { ModalCategoryComponent } from './modal-category/modal-category.component';
+import { MarkerItemComponent } from './marker-item/marker-item.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { ModalCategoryComponent } from './modal-category/modal-category.componen
   ],
   declarations: [
     CategoryComponent,
-    ModalCategoryComponent
+    ModalCategoryComponent,
+    MarkerItemComponent
   ]
 })
 export class CategoriesModule { }

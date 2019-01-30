@@ -1,0 +1,24 @@
+<div id="myModal" class="modal">
+  <div class="modal-content" *ngIf="editMarker">
+    <button class="close" (click)="closeModal()"><span class="close">&times;</span></button>
+    <select name="categories" id="category" [(ngModel)]="selectedCat">
+      <ng-container *ngIf="categories">
+        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+      </ng-container>
+    </select>
+    <!--<div class="group">-->
+    <!--<input type="text" [(ngModel)]="newCategory" required>-->
+    <!--<span class="highlight"></span>-->
+    <!--<span class="bar"></span>-->
+    <!--<label>New category</label>-->
+    <!--</div>-->
+    <div class="group">
+      <input type="text" [(ngModel)]="editMarker.name" required>
+      <span class="highlight"></span>
+      <span class="bar"></span>
+      <label>Marker name</label>
+    </div>
+    <textarea name="comments" [(ngModel)]="editMarker.comments" cols="50" rows="7" placeholder="Add comments"></textarea>
+    <input type="submit" value="Save changes" (click)="saveChanges()">
+  </div>
+</div>

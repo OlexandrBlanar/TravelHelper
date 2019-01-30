@@ -1,4 +1,4 @@
-import {Component, HostBinding, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 
@@ -13,6 +13,7 @@ import * as firebase from 'firebase/app';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   animations: [fadeStateTrigger],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class LoginComponent implements OnInit {
@@ -101,7 +102,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(email.value, password.value)
       .then(() => {
-        this.router.navigate(['/map']);
+        this.router.navigate(['/core/map']);
         console.log('Nice, it worked!');
       })
       .catch(err => {

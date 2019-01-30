@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 
 import { MapService } from '../map.service';
 import { DbService } from '@core/services/db.service';
@@ -15,7 +15,8 @@ declare let google;
 @Component({
   selector: 'th-maps',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss']
+  styleUrls: ['./map.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapComponent implements OnDestroy, OnInit {
 
@@ -41,6 +42,7 @@ export class MapComponent implements OnDestroy, OnInit {
   constructor(
     private mapService: MapService,
     private dbService: DbService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -61,7 +63,7 @@ export class MapComponent implements OnDestroy, OnInit {
         return combineLatest(this.dbService.markers$, this.dbService.categories$);
       })
       .takeUntil(this.ngUnsubscribe)
-      // .catch(error => Observable.of(error))
+      .catch(error => Observable.of(error))
       .subscribe(
         ([markers, categories]) => {
           this.categories = categories;
@@ -70,6 +72,7 @@ export class MapComponent implements OnDestroy, OnInit {
             this.selectedCat = categories[0];
           }
           this.markers = markers;
+          this.cd.markForCheck();
           if (markers[0] && categories[0]) {
             this.onChange(this.selectedCat, isChangeZoom);
             isChangeZoom = false;

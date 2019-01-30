@@ -1,4 +1,4 @@
-import {Component, HostBinding, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, HostBinding, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '../auth.service';
@@ -10,6 +10,7 @@ import { fadeStateTrigger } from './../../shared/animations/fade.animation';
   templateUrl: './new-password.component.html',
   styleUrls: ['./new-password.component.scss'],
   animations: [fadeStateTrigger],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewPasswordComponent implements OnInit {
 

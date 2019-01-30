@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import {Router} from '@angular/router';
 
 import { DbService } from '@core/services/db.service';
@@ -10,21 +10,26 @@ import {Observable} from 'rxjs/Observable';
 @Component({
   selector: 'th-category',
   templateUrl: './category.component.html',
-  styleUrls: ['./category.component.scss']
+  styleUrls: ['./category.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
-  private userUid: string;
+  userUid: string;
   categories: string[];
   newCategory: string;
   markers: Object[];
   selectedCat: string = null;
   selectedModalCat: string = null;
   deleteCat: string = null;
-  filteredMarkers: string[];
+  filteredMarkers: Object[];
   editMarker: any;
 
-  constructor(private dbService: DbService, private router: Router) {  }
+  constructor(
+    private dbService: DbService,
+    private router: Router,
+    private cd: ChangeDetectorRef
+  ) {  }
 
   ngOnInit() {
     this.dbService.userUid$
@@ -48,6 +53,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
             this.selectedModalCat = categories[0];
           }
           this.categories = categories;
+          this.cd.markForCheck();
         },
         error => console.log(error)
       );
@@ -57,6 +63,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
       .subscribe(
         markers => {
           this.markers = markers;
+          this.cd.markForCheck();
           this.editMarker = markers[0];
           this.onChange(this.selectedCat);
         },
@@ -81,14 +88,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   onChange(selectedCat: string): void {
     this.filteredMarkers = (this.markers as any).filter(marker => marker.category === selectedCat);
-  }
-
-  openModal(marker: any): void {
-    this.router.navigate(['/categories/modal', marker.name]);
-  }
-
-  deleteMarker(marker: string): void {
-    this.dbService.deleteMarker(this.userUid, marker);
   }
 
   ngOnDestroy() {

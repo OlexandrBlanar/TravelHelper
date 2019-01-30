@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, HostBinding} from '@angular/core';
+import {Component, OnInit, OnDestroy, HostBinding, ChangeDetectionStrategy} from '@angular/core';
 
 import { DbService } from '../services/db.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -11,6 +11,7 @@ import {fadeStateTrigger} from '@shared/animations/fade.animation';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
   animations: [fadeStateTrigger],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainComponent implements OnInit, OnDestroy {
   @HostBinding('@fade') a = true;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -6,7 +6,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 @Component({
   selector: 'th-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent implements OnInit {
 
@@ -23,6 +24,6 @@ export class NavbarComponent implements OnInit {
     this.firebaseAuth
       .auth
       .signOut()
-      .then(() => this.router.navigate(['./login']));
+      .then(() => this.router.navigate(['/auth/login']));
   }
 }

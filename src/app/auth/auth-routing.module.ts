@@ -5,7 +5,6 @@ import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { AuthComponent } from './auth.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
-import { NotFoundComponent } from '@app/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -25,7 +24,7 @@ const routes: Routes = [
         component: NewPasswordComponent
       },
     ]
-  }
+  },
 ];
 
 @NgModule({
